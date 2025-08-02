@@ -4,7 +4,10 @@
       "Bash(npm run dev:*)",
       "Bash(grep:*)",
       "Bash(taskkill:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(npm test)",
+      "Bash(npm run:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }

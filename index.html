@@ -112,14 +112,84 @@
           </div>
         </div>
         
-        <!-- Circuit Beta (Coming Soon) -->
+        <!-- Circuit Beta -->
         <div class="circuit-container circuit-beta">
-          <div class="circuit-header disabled">
+          <div class="circuit-header" onclick="toggleCircuit('beta')">
             <div class="circuit-info">
-              <span class="circuit-name">Circuit Beta</span>
-              <span class="circuit-progress">Coming Soon</span>
+              <span class="circuit-name">Circuit Beta: Elemental Odyssey</span>
+              <span class="circuit-progress">10/10 tracks</span>
             </div>
-            <span class="circuit-toggle">🔒</span>
+            <span class="circuit-toggle">▼</span>
+          </div>
+          
+          <div class="circuit-content" id="circuit-beta" style="display: none;">
+            <!-- Easy -->
+            <div class="difficulty-row">
+              <span class="difficulty-label easy">EASY</span>
+              <div class="track-list">
+                <button class="track-btn easy" data-level="11">
+                  <span class="track-number">11</span>
+                  <span class="track-name">Ocean Drift</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Medium -->
+            <div class="difficulty-row">
+              <span class="difficulty-label medium">MEDIUM</span>
+              <div class="track-list">
+                <button class="track-btn medium" data-level="12">
+                  <span class="track-number">12</span>
+                  <span class="track-name">Desert Mirage</span>
+                </button>
+                <button class="track-btn medium" data-level="13">
+                  <span class="track-number">13</span>
+                  <span class="track-name">Forest Trail</span>
+                </button>
+                <button class="track-btn medium" data-level="14">
+                  <span class="track-number">14</span>
+                  <span class="track-name">Metal Forge</span>
+                </button>
+                <button class="track-btn medium" data-level="15">
+                  <span class="track-number">15</span>
+                  <span class="track-name">Cloud Nine</span>
+                </button>
+                <button class="track-btn medium" data-level="16">
+                  <span class="track-number">16</span>
+                  <span class="track-name">Cave Crystal</span>
+                </button>
+                <button class="track-btn medium" data-level="17">
+                  <span class="track-number">17</span>
+                  <span class="track-name">Storm Chase</span>
+                </button>
+                <button class="track-btn medium" data-level="18">
+                  <span class="track-number">18</span>
+                  <span class="track-name">Magma Core</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Hard -->
+            <div class="difficulty-row">
+              <span class="difficulty-label hard">HARD</span>
+              <div class="track-list">
+                <button class="track-btn hard" data-level="19">
+                  <span class="track-number">19</span>
+                  <span class="track-name">Arctic Rush</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Extreme -->
+            <div class="difficulty-row">
+              <span class="difficulty-label extreme">EXTREME</span>
+              <div class="track-list">
+                <button class="track-btn extreme" data-level="20">
+                  <span class="track-number">20</span>
+                  <span class="track-name">Elemental Nexus</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -149,7 +219,11 @@
           </div>
           <div class="control-item">
             <kbd>1-9, 0</kbd>
-            <span>Quick Level Select</span>
+            <span>Levels 1-10</span>
+          </div>
+          <div class="control-item">
+            <kbd>Shift + 1-9, 0</kbd>
+            <span>Levels 11-20</span>
           </div>
           <div class="control-item">
             <kbd>ESC</kbd>

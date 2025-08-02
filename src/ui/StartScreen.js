@@ -36,13 +36,22 @@ export class StartScreen {
     this.keyHandler = (e) => {
       if (!this.isVisible()) return;
 
-      // Handle number keys 1-9 and 0 for level 10
+      // Handle number keys 1-9 and 0 for levels 1-10
       if (e.code.startsWith('Digit')) {
         const digit = parseInt(e.code.replace('Digit', ''));
         if (digit >= 1 && digit <= 9) {
           this.selectLevel(digit);
         } else if (digit === 0) {
           this.selectLevel(10); // 0 key selects level 10
+        }
+      }
+      // Handle Shift + number keys for levels 11-20
+      else if (e.shiftKey && e.code.startsWith('Digit')) {
+        const digit = parseInt(e.code.replace('Digit', ''));
+        if (digit >= 1 && digit <= 9) {
+          this.selectLevel(10 + digit); // Shift+1 = level 11, etc.
+        } else if (digit === 0) {
+          this.selectLevel(20); // Shift+0 = level 20
         }
       }
     };
