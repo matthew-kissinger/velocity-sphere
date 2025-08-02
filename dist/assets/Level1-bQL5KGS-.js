@@ -1,0 +1,2 @@
+const u={name:"Novice Circuit",description:"Gentle beginner track without gaps",difficulty:1,generateTrack(a){for(let t=0;t<20;t++)a({yawDelta:0,pitchDelta:0,rollDelta:0,isStartLine:t===0});const l=20,c=-Math.PI/4/l;for(let t=0;t<l;t++)a({yawDelta:c});const o=15,i=Math.PI/18;for(let t=0;t<o;t++){const r=t<o/2?i/(o/2):-i/(o/2);a({pitchDelta:r})}const e=20,s=Math.PI/4/e;for(let t=0;t<e;t++)a({yawDelta:s});const n=20;for(let t=0;t<n;t++)a({yawDelta:0,pitchDelta:0,rollDelta:0,isFinishLine:t===n-1})}};export{u as default};
+//# sourceMappingURL=Level1-bQL5KGS-.js.map

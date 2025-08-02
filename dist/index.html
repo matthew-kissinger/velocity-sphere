@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velocity Sphere – Gravity Racing Game</title>
+  <script type="module" crossorigin src="/assets/main-Cexaq7cI.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main-TYjOkGQD.css">
+</head>
+<body>
+  <!-- Game HUD -->
+  <div id="hud" class="hud">
+    <div class="hud-panel top-left">
+      <div id="levelDisplay" class="hud-item">Level: 1</div>
+      <div id="timer" class="hud-item">Time: 0.00 s</div>
+      <div id="speedometer" class="hud-item">Speed: 0.0</div>
+      <div id="bestTime" class="hud-item">Best: --:--</div>
+    </div>
+  </div>
+
+  <!-- Start Screen -->
+  <div id="startScreen" class="start-screen">
+    <div class="start-content">
+      <h1 class="game-title">
+        <span class="velocity">VELOCITY</span>
+        <span class="sphere">SPHERE</span>
+      </h1>
+      <div class="subtitle">Gravity Racing Championship</div>
+      
+      <div class="level-selection">
+        <h2>Choose Your Track</h2>
+        <div class="level-grid">
+          <button class="level-btn" data-level="1">
+            <div class="level-number">01</div>
+            <div class="level-name">Novice Circuit</div>
+            <div class="level-desc">Learn the basics</div>
+          </button>
+          <button class="level-btn" data-level="2">
+            <div class="level-number">02</div>
+            <div class="level-name">Rainbow Valley</div>
+            <div class="level-desc">Classic racing</div>
+          </button>
+          <button class="level-btn" data-level="3">
+            <div class="level-number">03</div>
+            <div class="level-name">Corkscrew Chaos</div>
+            <div class="level-desc">Ultimate challenge</div>
+          </button>
+        </div>
+      </div>
+      
+      <div class="controls-info">
+        <h3>Controls</h3>
+        <div class="controls-grid">
+          <div class="control-item">
+            <kbd>W A S D</kbd> or <kbd>↑ ← ↓ →</kbd>
+            <span>Steer</span>
+          </div>
+          <div class="control-item">
+            <kbd>SPACE</kbd>
+            <span>Jump</span>
+          </div>
+          <div class="control-item">
+            <kbd>R</kbd>
+            <span>Restart</span>
+          </div>
+          <div class="control-item">
+            <kbd>1 2 3</kbd>
+            <span>Switch Levels</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen hidden">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Loading Track...</div>
+    </div>
+  </div>
+
+</body>
+</html>
