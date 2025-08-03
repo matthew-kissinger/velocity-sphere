@@ -2,6 +2,8 @@
  * InputManager - Centralized input handling with event system
  */
 
+import nipplejs from 'nipplejs';
+
 export class InputManager {
   constructor() {
     this.state = {
@@ -16,12 +18,23 @@ export class InputManager {
     // Still need an event emitter for single-press actions like restart/level-select
     this.listeners = new Map();
     
+    // Mobile controls
+    this.joystick = null;
+    this.isMobile = this.detectMobile();
+    
     // Event handlers will use arrow functions to preserve context
 
     this.init();
   }
+  
+  detectMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+      || (window.matchMedia && window.matchMedia('(max-width: 768px)').matches)
+      || ('ontouchstart' in window);
+  }
 
   init() {
+    // Desktop controls
     window.addEventListener('keydown', (e) => {
       this.handleKeyDown(e);
       
@@ -34,6 +47,85 @@ export class InputManager {
     window.addEventListener('keyup', (e) => {
       this.handleKeyUp(e);
     });
+    
+    // Mobile controls initialization will be called when game starts
+  }
+  
+  initMobileControls() {
+    if (!this.isMobile) return;
+    
+    const mobileControls = document.getElementById('mobileControls');
+    if (mobileControls) {
+      mobileControls.classList.remove('hidden');
+      mobileControls.classList.add('show');
+    }
+    
+    // Initialize joystick
+    const joystickZone = document.getElementById('joystickZone');
+    if (joystickZone) {
+      this.joystick = nipplejs.create({
+        zone: joystickZone,
+        mode: 'static',
+        position: { left: '50%', top: '50%' },
+        color: 'cyan',
+        size: 120,
+        restOpacity: 0.75,
+        fadeTime: 250
+      });
+      
+      this.joystick.on('move', (evt, data) => {
+        const force = Math.min(data.force, 1);
+        const angle = data.angle.radian;
+        
+        // Convert joystick input to directional states
+        const threshold = 0.3;
+        
+        // Calculate X and Y components
+        const x = Math.cos(angle) * force;
+        const y = Math.sin(angle) * force;
+        
+        // Map to game controls (y is inverted in screen space)
+        this.state.right = x > threshold;
+        this.state.left = x < -threshold;
+        this.state.up = y > threshold;
+        this.state.down = y < -threshold;
+      });
+      
+      this.joystick.on('end', () => {
+        // Reset movement when joystick is released
+        this.state.left = false;
+        this.state.right = false;
+        this.state.up = false;
+        this.state.down = false;
+      });
+    }
+    
+    // Initialize jump button
+    const jumpButton = document.getElementById('jumpButton');
+    if (jumpButton) {
+      jumpButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.state.jumpRequested = true;
+      });
+      
+      jumpButton.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        this.state.jumpRequested = true;
+      });
+    }
+  }
+  
+  hideMobileControls() {
+    const mobileControls = document.getElementById('mobileControls');
+    if (mobileControls) {
+      mobileControls.classList.add('hidden');
+      mobileControls.classList.remove('show');
+    }
+    
+    if (this.joystick) {
+      this.joystick.destroy();
+      this.joystick = null;
+    }
   }
 
   handleKeyDown(e) {
@@ -80,5 +172,10 @@ export class InputManager {
     window.removeEventListener('keydown', this.handleKeyDown);
     window.removeEventListener('keyup', this.handleKeyUp);
     this.listeners.clear();
+    
+    if (this.joystick) {
+      this.joystick.destroy();
+      this.joystick = null;
+    }
   }
 }

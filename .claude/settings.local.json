@@ -20,7 +20,9 @@
       "Bash(cp:*)",
       "Bash(git fetch:*)",
       "Bash(git checkout:*)",
-      "Bash(deploy.bat)"
+      "Bash(deploy.bat)",
+      "Bash(npm install)",
+      "Bash(powershell:*)"
     ],
     "deny": []
   }

@@ -82,6 +82,13 @@ export class StartScreen {
       this.element.style.display = 'flex';
       this.element.classList.add('fade-in');
       
+      // Hide mobile controls when showing start screen
+      const mobileControls = document.getElementById('mobileControls');
+      if (mobileControls) {
+        mobileControls.classList.add('hidden');
+        mobileControls.classList.remove('show');
+      }
+      
       // Initialize background
       if (!this.background) {
         this.background = new StartBackground();

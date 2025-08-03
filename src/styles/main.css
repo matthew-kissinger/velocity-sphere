@@ -527,25 +527,202 @@ kbd {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  /* Start Screen Mobile Adjustments */
+  .start-content {
+    max-width: 95vw;
+    padding: 20px;
+    max-height: 90vh;
+  }
+  
   .game-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
-  .level-grid {
-    grid-template-columns: 1fr;
+  .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
   }
   
-  .controls-grid {
-    grid-template-columns: 1fr;
+  .circuit-selection h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
   }
   
+  .circuit-container {
+    margin-bottom: 10px;
+  }
+  
+  .circuit-header {
+    padding: 12px 15px;
+  }
+  
+  .circuit-name {
+    font-size: 1rem;
+  }
+  
+  .circuit-progress {
+    font-size: 0.75rem;
+  }
+  
+  .circuit-content {
+    padding: 15px;
+  }
+  
+  .difficulty-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .difficulty-label {
+    text-align: left;
+    margin-bottom: 5px;
+  }
+  
+  .track-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .track-btn {
+    min-width: auto;
+    padding: 10px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .track-number {
+    font-size: 0.9rem;
+  }
+  
+  .track-name {
+    font-size: 0.75rem;
+  }
+  
+  /* Hide desktop controls on mobile */
+  .controls-info {
+    display: none;
+  }
+  
+  /* Add mobile controls hint */
+  .start-content::after {
+    content: "Touch controls enabled in-game";
+    display: block;
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: rgba(0, 255, 255, 0.6);
+    text-align: center;
+  }
+  
+  /* HUD Adjustments */
   .hud {
-    font-size: 12px;
+    font-size: 11px;
+  }
+  
+  .hud-panel.top-left {
+    top: 15px;
+    left: 15px;
   }
   
   .hud-item {
-    min-width: 120px;
-    padding: 8px 12px;
+    min-width: 100px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+  
+  /* Completion Screen Mobile */
+  .completion-content {
+    max-width: 90vw;
+    padding: 30px 20px;
+  }
+  
+  .completion-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .completion-time .time-value {
+    font-size: 2.5rem;
+  }
+  
+  .completion-best .best-value {
+    font-size: 1.5rem;
+  }
+  
+  .completion-buttons {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  .completion-btn {
+    width: 100%;
+    padding: 16px 25px;
+    font-size: 1.1rem;
+  }
+  
+  .btn-key {
+    display: none;
+  }
+  
+  /* Show mobile controls */
+  .mobile-controls {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  .game-title {
+    font-size: 1.5rem;
+  }
+  
+  .track-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .completion-title {
+    font-size: 1.5rem;
+  }
+  
+  .completion-time .time-value {
+    font-size: 2rem;
+  }
+  
+  /* Adjust mobile controls for smaller screens */
+  .joystick-zone {
+    width: 120px;
+    height: 120px;
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .jump-button {
+    width: 80px;
+    height: 80px;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .jump-icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* Touch device detection */
+@media (hover: none) and (pointer: coarse) {
+  /* Ensure mobile controls are visible on touch devices */
+  body.playing .mobile-controls {
+    display: block;
+  }
+  
+  /* Increase touch targets */
+  .track-btn {
+    min-height: 44px;
+  }
+  
+  .completion-btn {
+    min-height: 48px;
   }
 }
 
@@ -833,4 +1010,105 @@ body.playing {
 .start-screen .track-btn,
 .start-screen .circuit-header {
   cursor: pointer;
+}
+
+/* Mobile Controls */
+.mobile-controls {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 150;
+  display: none;
+}
+
+.mobile-controls.show {
+  display: block;
+}
+
+.mobile-controls.hidden {
+  display: none !important;
+}
+
+/* Joystick Zone */
+.joystick-zone {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  width: 150px;
+  height: 150px;
+  pointer-events: all;
+}
+
+/* Jump Button */
+.jump-button {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(0, 255, 255, 0.4);
+  color: rgba(0, 255, 255, 0.9);
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(0, 255, 255, 0.15),
+    inset 0 0 20px rgba(0, 255, 255, 0.1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.jump-button:active {
+  transform: scale(0.95);
+  background: rgba(0, 255, 255, 0.2);
+  border-color: rgba(0, 255, 255, 0.8);
+  box-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(0, 255, 255, 0.4),
+    inset 0 0 30px rgba(0, 255, 255, 0.3);
+}
+
+.jump-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.jump-text {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+/* Nipple.js joystick custom styles */
+.joystick-zone .back,
+.joystick-zone .front {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(0, 255, 255, 0.4) !important;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(0, 255, 255, 0.15),
+    inset 0 0 20px rgba(0, 255, 255, 0.1) !important;
+}
+
+.joystick-zone .front {
+  background: rgba(0, 255, 255, 0.3) !important;
+  border: 2px solid rgba(0, 255, 255, 0.6) !important;
 }

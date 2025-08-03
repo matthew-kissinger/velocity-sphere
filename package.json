@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "cannon-es": "^0.20.0",
+    "nipplejs": "^0.10.2",
     "stats.js": "^0.17.0",
     "three": "^0.158.0"
   }

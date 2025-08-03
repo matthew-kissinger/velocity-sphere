@@ -114,6 +114,11 @@ export class Game {
   async loadLevel(level) {
     console.log(`Loading level ${level}...`);
     
+    // Initialize mobile controls when starting a level
+    if (this.inputManager) {
+      this.inputManager.initMobileControls();
+    }
+    
     this.currentLevel = level;
     this.hud.updateLevel(level);
 
