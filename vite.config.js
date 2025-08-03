@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/velocity-sphere/dist/',
+  base: '/velocity-sphere/',
   root: '.',
   publicDir: 'public',
   server: {

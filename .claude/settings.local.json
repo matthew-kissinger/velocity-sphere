@@ -19,7 +19,8 @@
       "Bash(gh api:*)",
       "Bash(cp:*)",
       "Bash(git fetch:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(deploy.bat)"
     ],
     "deny": []
   }
