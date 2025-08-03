@@ -649,21 +649,32 @@ kbd {
   
   /* Completion Screen Mobile */
   .completion-content {
-    max-width: 90vw;
-    padding: 30px 20px;
+    max-width: 95vw;
+    padding: 25px 15px;
+    border-radius: 15px;
   }
   
   .completion-title {
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+  }
+  
+  .completion-time {
+    margin-bottom: 10px;
   }
   
   .completion-time .time-value {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   .completion-best .best-value {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .completion-time .time-label,
+  .completion-best .best-label {
+    font-size: 0.8rem;
   }
   
   .completion-buttons {
@@ -674,8 +685,8 @@ kbd {
   
   .completion-btn {
     width: 100%;
-    padding: 16px 25px;
-    font-size: 1.1rem;
+    padding: 12px 20px;
+    font-size: 0.9rem;
   }
   
   .btn-key {
@@ -703,7 +714,20 @@ kbd {
   }
   
   .completion-time .time-value {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+  
+  .completion-best .best-value {
+    font-size: 1rem;
+  }
+  
+  .completion-content {
+    padding: 20px 15px;
+  }
+  
+  .completion-btn {
+    padding: 10px 15px;
+    font-size: 0.85rem;
   }
   
   /* Adjust mobile controls for smaller screens */
@@ -774,16 +798,16 @@ kbd {
 
 .completion-content {
   text-align: center;
-  max-width: 650px;
+  max-width: 400px;
   width: 90%;
   background: linear-gradient(135deg, rgba(0, 20, 40, 0.98), rgba(0, 40, 80, 0.95));
-  border: 3px solid var(--primary-color);
-  border-radius: 25px;
-  padding: 50px;
+  border: 2px solid var(--primary-color);
+  border-radius: 20px;
+  padding: 30px;
   box-shadow: 
-    0 0 100px rgba(0, 255, 255, 0.7),
-    0 0 50px rgba(0, 255, 255, 0.4) inset,
-    0 20px 40px rgba(0, 0, 0, 0.5);
+    0 0 60px rgba(0, 255, 255, 0.5),
+    0 0 30px rgba(0, 255, 255, 0.3) inset,
+    0 10px 30px rgba(0, 0, 0, 0.5);
   animation: completionSlideIn 0.4s ease-out;
   position: relative;
   overflow: hidden;
@@ -820,14 +844,14 @@ kbd {
 }
 
 .completion-title {
-  font-size: 3.5rem;
+  font-size: 2.2rem;
   background: linear-gradient(90deg, #00ffff, #00ff88, #88ff00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 35px;
+  margin-bottom: 20px;
   font-weight: 900;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   animation: titleGlow 2s ease-in-out infinite;
   position: relative;
   z-index: 1;
@@ -856,7 +880,7 @@ kbd {
 }
 
 .completion-time .time-value {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   color: var(--primary-color);
   font-weight: 900;
   text-shadow: 
@@ -885,7 +909,7 @@ kbd {
 }
 
 .completion-best .best-value {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: rgba(255, 215, 0, 0.8);
   font-weight: 300;
   margin: 10px 0;
@@ -951,20 +975,21 @@ kbd {
   background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(0, 255, 255, 0.05));
   border: 2px solid var(--primary-color);
   color: var(--text-light);
-  padding: 18px 35px;
-  border-radius: 12px;
-  font-size: 1.3rem;
+  padding: 14px 25px;
+  border-radius: 10px;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 10px;
   font-family: var(--font-family);
-  font-weight: 700;
+  font-weight: 600;
   position: relative;
   overflow: hidden;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .completion-btn::before {
