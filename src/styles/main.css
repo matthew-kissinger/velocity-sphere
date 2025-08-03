@@ -881,9 +881,9 @@ kbd {
 }
 
 .completion-best .best-value {
-  font-size: 2rem;
-  color: #FFD700;
-  font-weight: 700;
+  font-size: 1.2rem;
+  color: rgba(255, 215, 0, 0.8);
+  font-weight: 300;
   margin: 10px 0;
 }
 
