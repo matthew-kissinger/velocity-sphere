@@ -255,6 +255,10 @@ html, body {
   background: rgba(0, 0, 0, 0.1);
 }
 
+.circuit-content.open {
+  display: block;
+}
+
 /* Difficulty Rows */
 .difficulty-row {
   display: flex;
