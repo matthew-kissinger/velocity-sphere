@@ -96,14 +96,12 @@ export default {
         // Narrow sections with boost
         addSegment({
           lanes: [{ offset: 0, width: 5 }],
-          pitchDelta: Math.PI / 80, // Much gentler climb
-          isBoost: true // Add boost to help with climb
+          pitchDelta: Math.PI / 80 // Much gentler climb
         });
       } else if (i % 8 < 5) {
         // Boost sections for climbing
         addSegment({
-          pitchDelta: Math.PI / 80,
-          isBoost: true
+          pitchDelta: Math.PI / 80
         });
       } else {
         // Normal width

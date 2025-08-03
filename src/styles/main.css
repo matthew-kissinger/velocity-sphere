@@ -1,19 +1,41 @@
 /* Modern, game-ready CSS for Velocity Sphere */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --primary-color: #00ffff;
-  --secondary-color: #ff00ff;
-  --accent-color: #ffff00;
-  --text-light: #ffffff;
-  --text-dark: #000000;
-  --bg-dark: rgba(0, 0, 0, 0.85);
-  --bg-panel: rgba(0, 20, 40, 0.9);
-  --border-glow: rgba(0, 255, 255, 0.5);
-  --gradient-primary: linear-gradient(135deg, #00ffff, #0080ff);
-  --gradient-secondary: linear-gradient(135deg, #ff00ff, #ff0080);
-  --font-family: 'Orbitron', 'Arial', sans-serif;
+  --primary: #00d4ff;
+  --primary-dim: #0099cc;
+  --accent: #00ff88;
+  --danger: #ff4444;
+  --warning: #ffaa00;
+  --success: #00ff88;
+  
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+  --bg-panel: rgba(255, 255, 255, 0.03);
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.18);
+  --shadow-glow: 0 0 40px rgba(0, 212, 255, 0.15);
 }
 
 * {
@@ -24,11 +46,12 @@
 
 html, body {
   overflow: hidden;
-  background: #000;
-  color: var(--text-light);
-  font-family: var(--font-family);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-main);
   user-select: none;
-  cursor: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* HUD Styles */
@@ -40,19 +63,20 @@ html, body {
   height: 100vh;
   pointer-events: none;
   z-index: 100;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .hud-panel {
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .hud-panel.top-left {
-  top: 20px;
-  left: 20px;
+  top: 24px;
+  left: 24px;
 }
 
 .hud-panel.top-right {
@@ -70,22 +94,24 @@ html, body {
 
 .hud-item {
   background: var(--bg-panel);
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--border-glow);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  font-weight: 700;
-  text-shadow: 0 0 10px var(--primary-color);
-  min-width: 150px;
-  text-align: center;
-  transition: all 0.3s ease;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  font-weight: 500;
+  min-width: 140px;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  color: var(--text-secondary);
+  
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
 }
 
-.hud-item:hover {
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
-  transform: scale(1.02);
-}
+/* Remove hover effects for HUD items as they're not interactive */
 
 /* Minimap - Removed */
 
@@ -101,6 +127,7 @@ html, body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  cursor: default;
 }
 
 /* Three.js canvas background */
@@ -529,62 +556,167 @@ kbd {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1500;
-  backdrop-filter: blur(10px);
+  z-index: 9999;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .completion-screen.hidden {
-  display: none;
+  display: none !important;
 }
 
 .completion-content {
   text-align: center;
-  max-width: 600px;
+  max-width: 650px;
   width: 90%;
-  background: var(--bg-panel);
-  border: 2px solid var(--border-glow);
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
-  animation: completionSlideIn 0.5s ease-out;
+  background: linear-gradient(135deg, rgba(0, 20, 40, 0.98), rgba(0, 40, 80, 0.95));
+  border: 3px solid var(--primary-color);
+  border-radius: 25px;
+  padding: 50px;
+  box-shadow: 
+    0 0 100px rgba(0, 255, 255, 0.7),
+    0 0 50px rgba(0, 255, 255, 0.4) inset,
+    0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: completionSlideIn 0.4s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.completion-content::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.1), transparent 60%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes completionSlideIn {
-  from {
-    transform: translateY(-50px);
+  0% {
+    transform: scale(0.7) translateY(-30px);
     opacity: 0;
   }
-  to {
-    transform: translateY(0);
+  50% {
+    transform: scale(1.05) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(0);
     opacity: 1;
   }
 }
 
 .completion-title {
-  font-size: 3rem;
-  color: var(--primary-color);
-  text-shadow: 0 0 20px var(--primary-color);
-  margin-bottom: 30px;
+  font-size: 3.5rem;
+  background: linear-gradient(90deg, #00ffff, #00ff88, #88ff00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 35px;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  animation: titleGlow 2s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes titleGlow {
+  0%, 100% { 
+    filter: brightness(1) drop-shadow(0 0 20px rgba(0, 255, 255, 0.8));
+  }
+  50% { 
+    filter: brightness(1.2) drop-shadow(0 0 30px rgba(0, 255, 255, 1));
+  }
 }
 
 .completion-time {
-  font-size: 2.5rem;
-  color: var(--text-light);
-  margin-bottom: 10px;
-  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.completion-time .time-label,
+.completion-best .best-label {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+
+.completion-time .time-value {
+  font-size: 3.5rem;
+  color: var(--primary-color);
+  font-weight: 900;
+  text-shadow: 
+    0 0 20px var(--primary-color),
+    0 0 40px rgba(0, 255, 255, 0.5);
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+.completion-time .time-value.new-best-animation {
+  animation: newBestPulse 2s ease-in-out;
+}
+
+@keyframes newBestPulse {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.2); color: #FFD700; }
+  50% { transform: scale(1.1); }
+  75% { transform: scale(1.15); color: #FFD700; }
+  100% { transform: scale(1); }
 }
 
 .completion-best {
-  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.completion-best .best-value {
+  font-size: 2rem;
   color: #FFD700;
-  margin-bottom: 40px;
-  opacity: 0.9;
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.completion-best .time-difference {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+.performance-rating {
+  margin: 20px 0 30px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.performance-rating .rating-stars {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.performance-rating .rating-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .completion-best.new-record {
@@ -598,37 +730,107 @@ kbd {
 
 .completion-buttons {
   display: flex;
-  gap: 20px;
+  gap: 25px;
   justify-content: center;
+  margin-top: 30px;
+  animation: slideUp 0.6s ease-out 0.2s both;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .completion-btn {
-  background: var(--bg-dark);
-  border: 2px solid var(--border-glow);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(0, 255, 255, 0.05));
+  border: 2px solid var(--primary-color);
   color: var(--text-light);
-  padding: 15px 30px;
-  border-radius: 10px;
-  font-size: 1.2rem;
+  padding: 18px 35px;
+  border-radius: 12px;
+  font-size: 1.3rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-family: var(--font-family);
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.completion-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.4), transparent);
+  transition: width 0.4s, height 0.4s;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
 }
 
 .completion-btn:hover {
-  background: var(--primary-color);
-  color: var(--bg-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(0, 255, 255, 0.5);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 255, 255, 0.15));
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 10px 30px rgba(0, 255, 255, 0.6),
+    0 0 30px rgba(0, 255, 255, 0.4) inset;
+  border-color: #00ff88;
+}
+
+.completion-btn:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+.completion-btn:active {
+  transform: translateY(-1px) scale(1.02);
 }
 
 .btn-key {
-  background: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), #00ff88);
   color: var(--bg-dark);
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 1rem;
+  box-shadow: 
+    0 2px 10px rgba(0, 255, 255, 0.4),
+    0 0 20px rgba(0, 255, 255, 0.2) inset;
+  display: inline-block;
+  min-width: 45px;
+  text-align: center;
+}
+
+/* Cursor management */
+body.playing {
+  cursor: none;
+}
+
+.track-btn, .circuit-header, button {
+  cursor: pointer;
+}
+
+/* Custom cursor for start screen */
+.start-screen * {
+  cursor: default;
+}
+
+.start-screen button,
+.start-screen .track-btn,
+.start-screen .circuit-header {
+  cursor: pointer;
 }

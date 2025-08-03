@@ -155,7 +155,72 @@ export class Ball {
   }
 
   setupContactListeners() {
-    // Removed boost listener as requested
+    // Listen for collisions with special track elements
+    this.body.addEventListener('collide', (event) => {
+      const contactBody = event.body;
+      
+      if (!contactBody.userData) return;
+      
+      // Check if we hit a bounce pad
+      if (contactBody.userData.isBouncePad) {
+        // Apply upward impulse
+        const bounceForce = 25; // Adjust this value to control bounce height
+        this.body.velocity.y = Math.max(this.body.velocity.y, bounceForce);
+        
+        console.log('Hit bounce pad! Applying upward force:', bounceForce);
+      }
+      
+      // Check if we hit a speed pad
+      else if (contactBody.userData.isSpeedPad) {
+        // Apply forward speed boost
+        const currentVel = new CANNON.Vec3(
+          this.body.velocity.x,
+          this.body.velocity.y,
+          this.body.velocity.z
+        );
+        const speed = currentVel.length();
+        
+        if (speed > 0.1) {
+          // Boost in current direction
+          currentVel.normalize();
+          const boostedSpeed = Math.max(speed * 1.5, 40); // 1.5x speed or minimum 40
+          currentVel.scale(boostedSpeed, currentVel);
+          this.body.velocity.set(
+            currentVel.x,
+            currentVel.y,
+            currentVel.z
+          );
+        } else {
+          // If stationary, boost forward
+          this.body.velocity.z += 40;
+        }
+        
+        console.log('Hit speed pad! Speed boost applied');
+      }
+      
+      // Check if we hit a boost powerup
+      else if (contactBody.userData.isBoostPowerup && !contactBody.userData.collected) {
+        // Mark as collected
+        contactBody.userData.collected = true;
+        
+        // Hide the powerup meshes
+        if (contactBody.userData.meshes) {
+          contactBody.userData.meshes.forEach(mesh => {
+            mesh.visible = false;
+          });
+        }
+        
+        // Reset boost cooldown
+        this.lastBoostTime = 0;
+        
+        // If boost is not active, give a free boost
+        if (!this.isBoostActive) {
+          this.startBoost();
+        }
+        
+        console.log('Collected boost powerup! Cooldown reset');
+      }
+    });
   }
 
 

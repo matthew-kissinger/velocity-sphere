@@ -68,8 +68,8 @@ export default {
     const splitCount = 30;
     for (let i = 0; i < splitCount; i++) {
       const lanes = [
-        { offset: -6.0, width: 4.0, isBoost: (i % 3 === 0) },
-        { offset: 6.0,  width: 7.0, isBoost: false }
+        { offset: -6.0, width: 4.0 },  // Removed speed pads
+        { offset: 6.0,  width: 7.0 }
       ];
       addSegment({ lanes });
     }

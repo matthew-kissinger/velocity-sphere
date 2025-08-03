@@ -59,34 +59,34 @@ export default {
       }
     }
     
-    // Glacier crevasse section - dangerous gaps
-    for (let crevasse = 0; crevasse < 5; crevasse++) {
+    // Glacier crevasse section - dangerous gaps (FIXED: gentler ramps)
+    for (let crevasse = 0; crevasse < 3; crevasse++) { // Reduced from 5 to 3 jumps
       // Approach with slight descent
       for (let i = 0; i < 10; i++) {
         addSegment({
-          pitchDelta: -Math.PI / 100,
+          pitchDelta: -Math.PI / 150, // Gentler approach
           yawDelta: Math.sin(i * 0.2) * Math.PI / 120 // Ice instability
         });
       }
       
-      // Jump preparation
-      for (let i = 0; i < 6; i++) {
+      // Jump preparation - much gentler ramp
+      for (let i = 0; i < 8; i++) {
         addSegment({
-          pitchDelta: Math.PI / 35,
-          isBoost: (i === 0) // Need boost for icy takeoff
+          pitchDelta: Math.PI / 90, // Much gentler climb (2 degrees per segment)
+          isBoost: (i === 0 || i === 4) // More boost help
         });
       }
       
       // Crevasse gap
-      for (let i = 0; i < 4 + crevasse; i++) { // Increasing difficulty
+      for (let i = 0; i < 3 + crevasse; i++) { // Still increasing difficulty but starting smaller
         addSegment({ isGap: true });
       }
       
-      // Icy landing - careful!
+      // Icy landing - gentler
       for (let i = 0; i < 8; i++) {
         addSegment({
-          pitchDelta: -Math.PI / 40,
-          lanes: [{ offset: 0, width: 6 }] // Narrow landing
+          pitchDelta: -Math.PI / 90, // Gentler landing angle
+          lanes: [{ offset: 0, width: 7 }] // Slightly wider landing
         });
       }
     }
@@ -105,6 +105,11 @@ export default {
     }
     
     // Glacier slide - thrilling descent section
+    // Add boost powerup before the big descent
+    addSegment({
+      isBoostPowerup: true
+    });
+    
     // Start at glacier peak
     for (let i = 0; i < 10; i++) {
       addSegment({
@@ -115,13 +120,23 @@ export default {
       });
     }
     
-    // Epic glacier slide down
+    // Epic glacier slide down - FIXED camera issue with gentler angles
     for (let i = 0; i < 45; i++) {
       const slidePhase = i / 45;
       const curveIntensity = Math.sin(slidePhase * Math.PI * 3);
       
+      // Gradual increase then decrease in steepness to avoid camera lock
+      let pitchAngle;
+      if (i < 10) {
+        pitchAngle = -Math.PI / 80 * (i / 10); // Gradual steepening
+      } else if (i < 35) {
+        pitchAngle = -Math.PI / 80; // Manageable consistent descent
+      } else {
+        pitchAngle = -Math.PI / 80 * ((45 - i) / 10); // Gradual leveling
+      }
+      
       addSegment({
-        pitchDelta: -Math.PI / 40, // Consistent steep descent
+        pitchDelta: pitchAngle, // Much gentler descent
         yawDelta: curveIntensity * Math.PI / 50, // Weaving path
         rollDelta: curveIntensity * Math.PI / 60, // Banking
         isBoost: (i % 15 === 0), // Speed boosts
@@ -142,34 +157,55 @@ export default {
       });
     }
     
-    // The bridge - extreme precision required
-    for (let i = 0; i < 8; i++) {
-      addSegment({ rollDelta: Math.PI / 30 }); // Heavy banking
+    // The bridge - precision required (reduced banking)
+    for (let i = 0; i < 6; i++) {
+      addSegment({ rollDelta: Math.PI / 60 }); // Gentler banking
     }
     
     for (let i = 0; i < 30; i++) {
       addSegment({
         yawDelta: Math.PI / 60,
         pitchDelta: Math.cos(i * 0.2) * Math.PI / 150,
-        lanes: [{ offset: 0, width: 4 }], // Extremely narrow!
+        lanes: [{ offset: 0, width: 5 }], // Still narrow but more manageable
         rollDelta: 0
       });
     }
     
-    for (let i = 0; i < 8; i++) {
-      addSegment({ rollDelta: -Math.PI / 30 });
+    for (let i = 0; i < 6; i++) {
+      addSegment({ rollDelta: -Math.PI / 60 });
     }
     
-    // Ice slide finale - thrilling descent to finish
-    for (let i = 0; i < 30; i++) {
-      const slideIntensity = i / 30;
+    // Ice slide section - thrilling descent (fixed camera angle)
+    for (let i = 0; i < 20; i++) {
+      const slideIntensity = i / 20;
       addSegment({
         yawDelta: Math.sin(i * 0.15) * Math.PI / 80, // Weaving ice slide
-        pitchDelta: -Math.PI / 40 - (slideIntensity * Math.PI / 60), // Accelerating descent
+        pitchDelta: -Math.PI / 90, // Much gentler descent to avoid camera lock
         rollDelta: Math.sin(i * 0.2) * Math.PI / 100,
-        lanes: [{ offset: 0, width: 6 + slideIntensity * 4 }], // Widens as you go faster
-        isBoost: (i >= 10 && i <= 20), // Extended boost zone
-        isFinishLine: (i === 29)
+        lanes: [{ offset: 0, width: 6 + slideIntensity * 3 }], // Widens as you go faster
+        isBoost: (i >= 5 && i <= 15) // Extended boost zone
+      });
+    }
+    
+    // Transition to finish - proper ending instead of vertical climb
+    for (let i = 0; i < 10; i++) {
+      addSegment({
+        pitchDelta: i < 5 ? -Math.PI / 80 : 0, // Level out gradually
+        yawDelta: 0,
+        rollDelta: 0,
+        lanes: [{ offset: 0, width: 12 }] // Wide finish area
+      });
+    }
+    
+    // Victory straight
+    for (let i = 0; i < 15; i++) {
+      addSegment({
+        yawDelta: 0,
+        pitchDelta: 0,
+        rollDelta: 0,
+        lanes: [{ offset: 0, width: 12 }],
+        isBoost: (i >= 5 && i <= 10), // Final boost
+        isFinishLine: (i === 14)
       });
     }
   }

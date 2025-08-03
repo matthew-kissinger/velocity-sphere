@@ -21,15 +21,11 @@ export default {
       });
     }
     
-    // Rhythmic hills section - like a pump track (FIXED: gentler angles + boost)
+    // Rhythmic hills section - like a pump track
     for (let j = 0; j < 3; j++) {
-      // Boost before climbing
-      for (let i = 0; i < 2; i++) {
-        addSegment({ isBoost: true });
-      }
       // Up (gentler angle)
       for (let i = 0; i < 10; i++) {
-        addSegment({ pitchDelta: Math.PI / 80 }); // Reduced from /60 to /80
+        addSegment({ pitchDelta: Math.PI / 80 }); // Gentle climb
       }
       // Down
       for (let i = 0; i < 10; i++) {
@@ -83,9 +79,9 @@ export default {
       });
     }
     
-    // FIXED: Boost before triple split to maintain momentum
+    // Straight before triple split
     for (let i = 0; i < 5; i++) {
-      addSegment({ isBoost: true });
+      addSegment({ });
     }
     
     // Triple split path - three choices
@@ -106,9 +102,9 @@ export default {
         // Add boost zones at key points
         addSegment({
           lanes: [
-            { offset: -12, width: 6, isBoost: true },
-            { offset: 0, width: 7, isBoost: true },
-            { offset: 12, width: 6, isBoost: true }
+            { offset: -12, width: 6 },
+            { offset: 0, width: 7 },
+            { offset: 12, width: 6 }
           ]
         });
       } else if (i === 10) {

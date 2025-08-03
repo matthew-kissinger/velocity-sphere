@@ -32,12 +32,12 @@ export default {
       });
     }
     
-    // Straight conveyor section with boost
+    // Straight conveyor section with speed boost
     for (let i = 0; i < 15; i++) {
       addSegment({
         yawDelta: 0,
         pitchDelta: 0,
-        isBoost: true // Conveyor belt speed
+        isBoost: (i === 0 || i === 7 || i === 14) // Occasional conveyor belt speed zones
       });
     }
     

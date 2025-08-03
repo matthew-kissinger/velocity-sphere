@@ -35,12 +35,11 @@ export default {
       addSegment({ rollDelta: -Math.PI / 80 }); // Bank out
     }
     
-    // Speed section with boost zones for climbing sections
+    // Speed section downhill
     for (let i = 0; i < 30; i++) {
       addSegment({ 
         pitchDelta: -Math.PI / 300, // Gentler downhill
-        yawDelta: 0,
-        isBoost: i % 10 < 3 // Add boost pads every few segments
+        yawDelta: 0
       });
     }
     
@@ -120,13 +119,12 @@ export default {
       addSegment({ rollDelta: -Math.PI / 90 });
     }
     
-    // Add boost zones before finish for better momentum
+    // Final straight before finish
     for (let i = 0; i < 10; i++) {
       addSegment({
         yawDelta: 0,
         pitchDelta: 0,
-        rollDelta: 0,
-        isBoost: true // Boost section before finish
+        rollDelta: 0
       });
     }
     

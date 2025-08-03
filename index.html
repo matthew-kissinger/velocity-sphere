@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Velocity Sphere – Gravity Racing Game</title>
-  <link rel="stylesheet" href="/src/styles/main.css">
+  <link rel="stylesheet" href="/src/styles/modern.css">
 </head>
 <body>
   <!-- Game HUD -->
@@ -122,7 +122,7 @@
             <span class="circuit-toggle">▼</span>
           </div>
           
-          <div class="circuit-content" id="circuit-beta" style="display: none;">
+          <div class="circuit-content" id="circuit-beta">
             <!-- Easy -->
             <div class="difficulty-row">
               <span class="difficulty-label easy">EASY</span>
@@ -158,14 +158,6 @@
                   <span class="track-number">16</span>
                   <span class="track-name">Cave Crystal</span>
                 </button>
-                <button class="track-btn medium" data-level="17">
-                  <span class="track-number">17</span>
-                  <span class="track-name">Storm Chase</span>
-                </button>
-                <button class="track-btn medium" data-level="18">
-                  <span class="track-number">18</span>
-                  <span class="track-name">Magma Core</span>
-                </button>
               </div>
             </div>
             
@@ -173,6 +165,10 @@
             <div class="difficulty-row">
               <span class="difficulty-label hard">HARD</span>
               <div class="track-list">
+                <button class="track-btn hard" data-level="17">
+                  <span class="track-number">17</span>
+                  <span class="track-name">Storm Chase</span>
+                </button>
                 <button class="track-btn hard" data-level="19">
                   <span class="track-number">19</span>
                   <span class="track-name">Arctic Rush</span>
@@ -184,9 +180,87 @@
             <div class="difficulty-row">
               <span class="difficulty-label extreme">EXTREME</span>
               <div class="track-list">
+                <button class="track-btn extreme" data-level="18">
+                  <span class="track-number">18</span>
+                  <span class="track-name">Magma Core</span>
+                </button>
                 <button class="track-btn extreme" data-level="20">
                   <span class="track-number">20</span>
                   <span class="track-name">Elemental Nexus</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Circuit Gamma -->
+        <div class="circuit-container circuit-gamma">
+          <div class="circuit-header" onclick="toggleCircuit('gamma')">
+            <div class="circuit-info">
+              <span class="circuit-name">Circuit Gamma: Quantum Odyssey</span>
+              <span class="circuit-progress">10/10 tracks</span>
+            </div>
+            <span class="circuit-toggle">▼</span>
+          </div>
+          
+          <div class="circuit-content" id="circuit-gamma">
+            <!-- Medium -->
+            <div class="difficulty-row">
+              <span class="difficulty-label medium">MEDIUM</span>
+              <div class="track-list">
+                <button class="track-btn medium" data-level="22">
+                  <span class="track-number">22</span>
+                  <span class="track-name">Rolling Thunder</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Hard -->
+            <div class="difficulty-row">
+              <span class="difficulty-label hard">HARD</span>
+              <div class="track-list">
+                <button class="track-btn hard" data-level="21">
+                  <span class="track-number">21</span>
+                  <span class="track-name">Quantum Flux</span>
+                </button>
+                <button class="track-btn hard" data-level="23">
+                  <span class="track-number">23</span>
+                  <span class="track-name">Channel 23</span>
+                </button>
+                <button class="track-btn hard" data-level="24">
+                  <span class="track-number">24</span>
+                  <span class="track-name">Neon Drift</span>
+                </button>
+                <button class="track-btn hard" data-level="25">
+                  <span class="track-number">25</span>
+                  <span class="track-name">Volcanic Ascent</span>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Extreme -->
+            <div class="difficulty-row">
+              <span class="difficulty-label extreme">EXTREME</span>
+              <div class="track-list">
+                <button class="track-btn extreme" data-level="26">
+                  <span class="track-number">26</span>
+                  <span class="track-name">Time Warp</span>
+                </button>
+                <button class="track-btn extreme" data-level="27">
+                  <span class="track-number">27</span>
+                  <span class="track-name">Ice Canyon</span>
+                </button>
+                <button class="track-btn extreme" data-level="28">
+                  <span class="track-number">28</span>
+                  <span class="track-name">Zen Garden</span>
+                </button>
+                <button class="track-btn extreme" data-level="29">
+                  <span class="track-number">29</span>
+                  <span class="track-name">Quantum Tunnels</span>
+                </button>
+                <button class="track-btn extreme" data-level="30">
+                  <span class="track-number">30</span>
+                  <span class="track-name">Ultimate Circuit</span>
                 </button>
               </div>
             </div>
@@ -264,27 +338,33 @@
   <script type="module" src="/src/main.js"></script>
   
   <script>
-    // Circuit toggle functionality
+    // Circuit toggle functionality with smooth transitions
     function toggleCircuit(circuitId) {
       const content = document.getElementById(`circuit-${circuitId}`);
       const toggle = document.querySelector(`[onclick="toggleCircuit('${circuitId}')"] .circuit-toggle`);
       
-      if (content.style.display === 'none' || !content.style.display) {
-        content.style.display = 'block';
-        toggle.textContent = '▲';
-      } else {
-        content.style.display = 'none';
+      if (content.classList.contains('open')) {
+        content.classList.remove('open');
         toggle.textContent = '▼';
+      } else {
+        // Close other circuits first
+        document.querySelectorAll('.circuit-content.open').forEach(el => {
+          el.classList.remove('open');
+        });
+        document.querySelectorAll('.circuit-toggle').forEach(el => {
+          el.textContent = '▼';
+        });
+        
+        content.classList.add('open');
+        toggle.textContent = '▲';
       }
     }
     
-    // Initialize - show Circuit Alpha by default
-    document.addEventListener('DOMContentLoaded', () => {
-      const alphaContent = document.getElementById('circuit-alpha');
-      if (alphaContent) {
-        alphaContent.style.display = 'block';
-      }
-    });
+    // Initialize immediately - no DOMContentLoaded delay
+    (function() {
+      // All circuits start collapsed
+      // No need to do anything since they're closed by default
+    })();
   </script>
 </body>
 </html>

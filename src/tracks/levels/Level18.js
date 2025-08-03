@@ -1,13 +1,13 @@
 /**
  * Level 18 - Magma Core
  * Deep earth core racing with lava flows
- * Medium difficulty with heat-based challenges
+ * EXTREME difficulty with advanced movement techniques required
  */
 
 export default {
   name: "Magma Core",
   description: "Race through the molten heart of the earth",
-  difficulty: 4,
+  difficulty: 6, // Moved to extreme difficulty
   shader: "lava-flow",
   skybox: "lava-storm",
   
@@ -66,8 +66,7 @@ export default {
             { offset: 0, width: 6 },
             { offset: 10, width: 5 }
           ],
-          pitchDelta: Math.sin(i * 0.2) * Math.PI / 120,
-          isBoost: (i % 10 === 7) // Heat updraft boost
+          pitchDelta: Math.sin(i * 0.2) * Math.PI / 120
         });
       }
     }
@@ -98,7 +97,7 @@ export default {
       for (let i = 0; i < 6; i++) {
         addSegment({
           pitchDelta: Math.PI / 35,
-          isBoost: (i === 0) // Eruption boost
+          // No boost needed - natural momentum from jump
         });
       }
       
@@ -127,7 +126,7 @@ export default {
           yawDelta: bend.angle / bend.segments,
           pitchDelta: bend.descend ? -Math.PI / 120 : Math.PI / 150,
           rollDelta: Math.sin(progress * Math.PI) * Math.PI / 40 * (bend.angle > 0 ? 1 : -1),
-          isBoost: (i % 15 === 0) // Lava flow current
+          isBoost: (i === 10 && bend.angle > 0) // Only boost on right turns for path choice
         });
       }
     }
@@ -148,7 +147,7 @@ export default {
       for (let i = 0; i < 5; i++) {
         addSegment({ 
           pitchDelta: -Math.PI / 30,
-          isBoost: (i === 0) // Drop boost
+          // Natural drop momentum
         });
       }
       
@@ -158,16 +157,27 @@ export default {
       }
     }
     
-    // Lava river finale - rapid descent to finish
-    for (let i = 0; i < 40; i++) {
-      const riverCurve = Math.sin(i * 0.15) * Math.PI / 40;
+    // Lava river finale - challenging but fair descent
+    for (let i = 0; i < 30; i++) {
+      const riverCurve = Math.sin(i * 0.15) * Math.PI / 45;
       addSegment({
         yawDelta: riverCurve,
-        pitchDelta: -Math.PI / 50, // Fast flowing descent
-        rollDelta: riverCurve * 0.5, // Banking with the flow
-        isBoost: (i % 8 === 0), // Lava flow boosts
-        lanes: [{ offset: Math.sin(i * 0.2) * 2, width: 8 }], // Flowing path
-        isFinishLine: (i === 39)
+        pitchDelta: -Math.PI / 60, // More manageable descent
+        rollDelta: riverCurve * 0.4, // Less extreme banking
+        isBoost: (i === 15), // Single strategic boost mid-section
+        lanes: [{ offset: Math.sin(i * 0.2) * 1.5, width: 8 }], // Slightly less variation
+      });
+    }
+    
+    // Final approach - level out for finish
+    for (let i = 0; i < 15; i++) {
+      addSegment({
+        yawDelta: 0,
+        pitchDelta: i < 5 ? -Math.PI / 100 : 0, // Gentle level out
+        rollDelta: 0,
+        lanes: [{ offset: 0, width: 10 }], // Wider for finish
+        isBoost: (i >= 5 && i <= 10), // Final boost
+        isFinishLine: (i === 14)
       });
     }
   }

@@ -79,9 +79,16 @@ class VelocitySphere {
   
   async retryLevel() {
     if (this.game) {
-      this.game.stop();
-      await this.game.loadLevel(this.currentLevel);
-      this.game.start();
+      console.log('Retrying level...');
+      
+      // Hide completion screen first
+      this.completionScreen.hide();
+      
+      // Reset the game state and resume
+      this.game.restart();
+      this.game.resume();
+      
+      console.log('Level retry initiated');
     }
   }
   

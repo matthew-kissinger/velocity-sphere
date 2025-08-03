@@ -1,7 +1,7 @@
 /**
  * Level 17 - Storm Chase
  * Racing through an electric storm with chaotic elements
- * Medium difficulty with unpredictable patterns
+ * Hard difficulty with unpredictable patterns
  */
 
 export default {
@@ -18,7 +18,8 @@ export default {
         yawDelta: Math.sin(i * 0.1) * Math.PI / 150, // Slight wind drift
         pitchDelta: 0,
         rollDelta: 0,
-        isStartLine: (i === 0)
+        isStartLine: (i === 0),
+        lanes: [{ offset: 0, width: 10 }] // Ensure proper geometry
       });
     }
     
@@ -37,7 +38,7 @@ export default {
         const intensity = Math.min(i / 3, 1); // Quick ramp up
         addSegment({
           yawDelta: (gust.angle / gust.segments) * intensity,
-          pitchDelta: Math.random() * Math.PI / 200 - Math.PI / 400, // Turbulence
+          pitchDelta: 0, // Removed turbulence
           rollDelta: (gust.angle > 0 ? 1 : -1) * Math.PI / 60 * intensity
         });
       }
@@ -103,27 +104,72 @@ export default {
       });
     }
     
-    // Downdraft section - sudden drops
-    for (let draft = 0; draft < 3; draft++) {
-      // Level approach
-      for (let i = 0; i < 8; i++) {
-        addSegment({ pitchDelta: 0 });
-      }
-      
-      // Sudden drop
+    // Storm jumps - clean jumps without turbulence
+    for (let jump = 0; jump < 3; jump++) {
+      // Straight approach
       for (let i = 0; i < 10; i++) {
         addSegment({
-          pitchDelta: -Math.PI / 45,
-          yawDelta: Math.sin(i * 0.5) * Math.PI / 100 // Instability
+          yawDelta: 0,
+          pitchDelta: 0,
+          rollDelta: 0,
+          lanes: [{ offset: 0, width: 10 }]
         });
       }
       
-      // Recovery flow - horizontal with slight descent
+      // Jump ramp
       for (let i = 0; i < 8; i++) {
         addSegment({
-          pitchDelta: -Math.PI / 150, // Gentle descent to maintain speed
-          yawDelta: (draft % 2 ? 1 : -1) * Math.PI / 100, // Slight curve
-          isBoost: (i < 3) // Updraft boost for momentum
+          pitchDelta: Math.PI / 60,
+          yawDelta: 0,
+          isBoost: (i === 0) // Boost at takeoff
+        });
+      }
+      
+      // Gap
+      for (let i = 0; i < 3 + jump; i++) {
+        addSegment({ isGap: true });
+      }
+      
+      // Landing
+      for (let i = 0; i < 8; i++) {
+        addSegment({
+          pitchDelta: -Math.PI / 60,
+          yawDelta: 0
+        });
+      }
+    }
+    
+    // Wind tunnel section - high speed with narrowing/widening path
+    for (let i = 0; i < 40; i++) {
+      const phase = i / 40;
+      const tunnelWidth = 8 + Math.sin(phase * Math.PI * 2) * 4; // Oscillating width
+      const windPush = Math.sin(phase * Math.PI * 4) * Math.PI / 100; // Side to side
+      
+      addSegment({
+        yawDelta: windPush,
+        pitchDelta: 0,
+        rollDelta: windPush * 2, // Bank with the wind
+        lanes: [{ offset: 0, width: tunnelWidth }],
+        isBoost: (i % 10 === 5) // Periodic wind tunnel boosts
+      });
+    }
+    
+    // Storm wall breakthrough - series of quick turns
+    const stormWallPattern = [
+      { dir: 1, segments: 8 },
+      { dir: -1, segments: 10 },
+      { dir: 1, segments: 6 },
+      { dir: -1, segments: 8 },
+      { dir: 1, segments: 5 }
+    ];
+    
+    for (const section of stormWallPattern) {
+      for (let i = 0; i < section.segments; i++) {
+        addSegment({
+          yawDelta: section.dir * Math.PI / 50,
+          pitchDelta: 0,
+          rollDelta: section.dir * Math.PI / 100 * (i < section.segments/2 ? 1 : -1),
+          lanes: [{ offset: 0, width: 8 }]
         });
       }
     }

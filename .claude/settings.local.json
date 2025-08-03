@@ -7,7 +7,13 @@
       "Bash(rm:*)",
       "Bash(npm test)",
       "Bash(npm run:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(for i in {1..10})",
+      "Bash(do echo \"Level$i.js:\")",
+      "Bash(done)",
+      "Bash(python:*)",
+      "Bash(node:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

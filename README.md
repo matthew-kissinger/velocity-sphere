@@ -1,99 +1,64 @@
-# 🌐 Velocity Sphere: AI Circuit Generation Meta-Prompt
+# 🌐 Velocity Sphere: High-Performance 3D Racing Game
 
-**A self-documenting codebase designed as a context surface for AI agents to autonomously generate racing circuits**
+**A browser-based 3D racing game with 30 unique tracks across 3 circuits, built with Three.js and Cannon.js**
 
-## 🎯 META-PROMPT OBJECTIVE
+## 🎮 Game Overview
 
-This repository serves as a **complete context surface** for AI coding agents to:
-1. **Analyze successful track patterns** from existing circuits
-2. **Generate new 10-track circuits** with innovative designs and techniques
-3. **Implement modern web technologies** (Three.js, Cannon.js, WebGL shaders)
-4. **Create scalable, playable racing experiences**
+Velocity Sphere is a high-speed 3D racing game where players control a holographic sphere through increasingly challenging tracks. The game features:
 
-## 🚀 AGENT WORKFLOW
+- **30 Unique Tracks** across 3 distinct circuits
+- **Progressive Difficulty** from tutorial to extreme challenges
+- **Real-time Physics** with Cannon.js physics engine
+- **Dynamic Visuals** with custom shaders and effects
+- **60+ FPS Performance** with heavily optimized rendering
 
-### Phase 1: Context Analysis
-**Agent Task**: Study this codebase to understand:
-- Track generation patterns (`src/tracks/levels/Level*.js`)
-- Physics constraints and gameplay mechanics
-- Visual design language (rainbow spectrum, minimalist UI)
-- Performance optimization techniques
-- Playtest feedback integration patterns
+## 🏁 Circuits & Tracks
 
-### Phase 2: Circuit Generation
-**Agent Task**: Create the next circuit (10 tracks) following established patterns:
-```javascript
-// Template for new circuits
-export default {
-  name: "Track Name",
-  description: "Concise track description",
-  difficulty: 1-4, // Easy=1, Medium=2, Hard=3, Extreme=4
-  
-  generateTrack(addSegment) {
-    // Apply lessons learned from Circuit Alpha
-    // Use strategic boost placement
-    // Follow safe climbing angles (Math.PI/80 or gentler)
-    // Ensure wide lanes (6+ units) for split sections
-  }
-};
+### Circuit 1: Prismatic (Tracks 1-10)
+- **Theme**: Introduction to core mechanics
+- **Difficulty**: Easy to Hard
+- **Highlights**: Tutorial level, split paths, loops, technical challenges
+
+### Circuit 2: Nova (Tracks 11-20)
+- **Theme**: Advanced techniques and extreme challenges
+- **Difficulty**: Medium to Extreme
+- **Highlights**: Multi-path choices, vertical climbs, complex geometries
+
+### Circuit 3: Zenith (Tracks 21-30)
+- **Theme**: Ultimate mastery and performance optimized
+- **Difficulty**: Medium to Extreme
+- **Highlights**: Time distortions, zen gardens, ultimate challenges
+- **Special**: Heavily optimized for 60+ FPS despite complex designs
+
+## 🚀 Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
 ```
 
-### Phase 3: Testing & Integration
-**Agent Task**: 
-- Integrate new tracks into circuit system
-- Test performance with FPS monitoring
-- Validate physics and playability
-- Update documentation
+## 🎯 Game Controls
 
-## 📋 HUMAN PLAYTEST FEEDBACK FORMAT
+- **W/↑**: Accelerate forward
+- **S/↓**: Brake/Reverse
+- **A/←**: Turn left
+- **D/→**: Turn right
+- **Space**: Jump (when grounded)
+- **Shift**: Boost (8 second cooldown)
+- **R**: Reset position if stuck
+- **P**: Pause game
+- **ESC**: Return to menu
 
-**Standardized feedback for iterative improvement:**
+## 🏗️ Technical Architecture
 
-```
-CIRCUIT: [Circuit Name]
-TRACK: [Number] - [Track Name]
+### Core Systems
 
-PLAYABILITY: [excellent/good/needs-work/unplayable]
-DIFFICULTY: [too-easy/perfect/too-hard/impossible]
-PERFORMANCE: [60fps/45-60fps/30-45fps/below-30fps]
-ISSUES: [specific problems encountered]
-HIGHLIGHTS: [what worked well]
-SUGGESTIONS: [specific improvements needed]
-```
-
-## 🏗️ ESTABLISHED PATTERNS & CONSTRAINTS
-
-### ✅ PROVEN SUCCESSFUL PATTERNS
-- **Strategic boost placement** before climbs and challenging sections
-- **Gentle climbing angles** (Math.PI/80 or less for sustained climbs)
-- **Wide split lanes** (6+ units) to prevent falling through
-- **Balanced difficulty progression** within each circuit
-- **Performance-optimized geometry** with instanced walls and merged segments
-
-### ⚠️ PHYSICS CONSTRAINTS
-- **Maximum climb angle**: Math.PI/60 without boost assistance
-- **Safe descent angle**: Math.PI/40 (steeper feels like cliffs)
-- **Minimum lane width**: 6 units for reliable navigation
-- **Track thickness**: 0.6 units (established standard)
-- **Segment length**: 6 units (performance optimized)
-
-### 🎨 VISUAL DESIGN LANGUAGE
-- **Rainbow spectrum colors** throughout track geometry
-- **Minimalist UI** with high contrast for readability
-- **Dark backgrounds** with subtle Three.js effects
-- **Circuit-based organization** with collapsible sections
-- **Professional FPS monitoring** (stats.js integration)
-
-## 🔧 TECHNICAL STACK REFERENCE
-
-### Core Technologies
-- **Three.js**: 3D graphics and WebGL rendering
-- **Cannon.js**: Physics simulation
-- **Vite**: Build system and development server
-- **stats.js**: Performance monitoring
-- **ES6 Modules**: Clean modular architecture
-
-### Key Systems
 ```
 src/
 ├── game/               # Core game loop and logic
@@ -102,82 +67,179 @@ src/
 │   └── Timer.js       # Lap timing system
 ├── tracks/            # Track generation system
 │   ├── TrackBuilder.js # Optimized track construction
-│   ├── levels/        # Individual track definitions
-│   └── generation/   # Alternative generation strategies
+│   └── levels/        # 30 individual track definitions
 ├── rendering/         # Visual systems
-│   ├── Camera.js      # Dynamic camera system
-│   ├── Lighting.js    # Professional lighting
+│   ├── Camera.js      # Dynamic chase camera
+│   ├── Lighting.js    # Professional lighting setup
 │   └── Skybox.js      # Procedural backgrounds
 ├── physics/           # Physics world management
 ├── input/             # Input handling
 └── ui/                # User interface components
-    ├── StartScreen.js # Circuit selection with Three.js bg
-    ├── HUD.js         # Performance monitoring integration
-    └── StartBackground.js # Custom shader effects
+    ├── StartScreen.js # Circuit selection
+    ├── HUD.js         # In-game UI with FPS counter
+    └── StartBackground.js # Animated menu background
 ```
 
-## 📊 CIRCUIT ALPHA ANALYSIS
+### Performance Optimizations
 
-### Performance Metrics
-- **10 tracks** successfully implemented and tested
-- **Difficulty distribution**: 1 Easy, 5 Medium, 1 Hard, 3 Extreme
-- **Average completion time**: 30-60 seconds per track
-- **Performance target**: 60 FPS on mid-range hardware
-- **Physics stability**: Verified across all difficulty levels
+#### Circuit 3 Specific Optimizations (Fixed January 2025)
+- **Segment Reduction**: Levels reduced from 200-440 to 130-200 segments
+- **Roll Optimization**: Removed excessive banking changes that prevented geometry merging
+- **Calculation Simplification**: Removed complex sin/cos calculations in tight loops
+- **Geometry Merging**: Box segments merged into single meshes where possible
+- **Instanced Rendering**: Walls rendered as InstancedMesh for massive performance gains
 
-### Successful Design Elements
-1. **Level 1**: Perfect tutorial with gentle curves
-2. **Level 2**: Excellent technical challenge (hard difficulty)
-3. **Levels 3-7**: Engaging medium difficulty with variety
-4. **Levels 8-10**: Extreme challenges with boost assistance
+#### General Optimizations
+- **Geometry Caching**: Reused geometries across similar segments
+- **Material Sharing**: Single material instance for track segments
+- **LOD System**: Automatic quality adjustment based on performance
+- **Efficient Physics**: Static bodies for track, optimized collision detection
 
-### Fixed Issues & Lessons Learned
-- **Ground detection**: Improved raycasting for reliable jumping
-- **Boost system**: 4x multiplier with enhanced acceleration
-- **Climb assistance**: Strategic boost zones prevent momentum loss
-- **Split lane design**: Wider lanes prevent falling through gaps
-- **Angle safety**: Descent angles capped to prevent cliff effects
+## 🎨 Visual Features
 
-## 🤖 AGENT GENERATION GUIDELINES
+### Shader System
+Each level can specify custom shaders for unique visual effects:
+- `rainbow-flow`: Dynamic rainbow gradients
+- `matrix-rain`: Digital rain effects
+- `lava-flow`: Molten rock simulation
+- `ice-crystal`: Frozen surface effects
+- `energy-pulse`: Pulsating energy waves
+- `zen-sand`: Peaceful sand patterns
+- And many more...
 
-### New Circuit Requirements (10 Tracks)
-1. **Maintain established difficulty distribution**
-2. **Introduce new track elements** while respecting physics
-3. **Optimize for performance** using established patterns
-4. **Test thoroughly** with integrated FPS monitoring
-5. **Document design decisions** for future circuits
+### Dynamic Skyboxes
+- Procedurally generated backgrounds
+- Level-specific themes (space, sunset, storm, etc.)
+- Real-time color transitions
 
-### Innovation Opportunities
-- **New track geometries** within physics constraints
-- **Advanced shader effects** for visual variety
-- **Dynamic track elements** (moving sections, adaptive difficulty)
-- **Procedural generation** algorithms for mass track creation
-- **Enhanced particle effects** and visual polish
+## ⚙️ Physics System
 
-### Quality Assurance Checklist
-- [ ] Track completes successfully at target difficulty
-- [ ] FPS remains above 45 on standard hardware
-- [ ] Physics behavior is stable and predictable
-- [ ] Visual design matches established aesthetic
-- [ ] Integration with circuit selection system works
-- [ ] Performance stats show acceptable metrics
+### Ball Physics
+- **Mass**: 5 units
+- **Radius**: 1.0 units
+- **Linear Damping**: 0.1 (maintains momentum)
+- **Jump Velocity**: 8 units/s
+- **Base Acceleration**: 30 units/s²
+- **Boost Multiplier**: 4x speed
+- **Max Speed**: Unlimited (999 units/s)
 
-## 🔄 CONTINUOUS IMPROVEMENT CYCLE
+### Track Physics
+- **Segment Length**: 6 units
+- **Track Thickness**: 0.6 units
+- **Default Width**: 10 units
+- **Wall Height**: 4 units
+- **Material Friction**: 0.8 (ball), 0.4 (track)
 
-1. **Agent generates new circuit**
-2. **Human playtests and provides structured feedback**
-3. **Agent analyzes feedback and iterates**
-4. **Successful patterns added to meta-prompt context**
-5. **Process scales to unlimited circuits**
+## 🐛 Known Issues & Fixes
 
-## 🎮 CURRENT STATE: READY FOR NEW CIRCUITS
+### Recent Fixes (January 2025)
+- ✅ **Speed Powerup Collision**: Changed to trigger-only (no physical collision)
+- ✅ **Circuit 3 Performance**: Reduced segment counts by 50-60%
+- ✅ **Track Flipping**: Fixed banking limits and proper reset sequences
+- ✅ **Frame Drops**: Optimized levels 26, 28, 30 for 60+ FPS
 
-**Circuit Prismatic Status**: ✅ Complete and stable (10 tracks: Sunrise, Neon Grid, Spectrum, Matrix, Crystaline, Inferno, Voltage, Hyperdrive, Cyberflow, Apex)
-**Infrastructure**: ✅ Ready for multi-circuit scaling
-**Documentation**: ✅ Comprehensive context surface established
-**Performance**: ✅ Optimized and monitored
-**Agent Integration**: ✅ Clear patterns and constraints documented
+### Current Limitations
+- Browser must support WebGL 2.0
+- Best performance on Chrome/Edge
+- Mobile support experimental
+
+## 🛠️ Development Guide
+
+### Adding New Tracks
+
+1. Create a new file in `src/tracks/levels/`
+2. Follow the established pattern:
+
+```javascript
+export default {
+  name: "Track Name",
+  description: "Track description",
+  difficulty: 1-5, // 1=Easy, 5=Extreme
+  shader: "shader-name", // Optional custom shader
+  skybox: "skybox-name", // Optional skybox
+  
+  generateTrack(addSegment) {
+    // Track generation logic
+    // Use addSegment() to build track pieces
+  }
+};
+```
+
+### Performance Guidelines
+
+1. **Segment Count**: Keep under 250 segments per track
+2. **Roll Changes**: Minimize banking changes to allow geometry merging
+3. **Calculations**: Avoid complex math in tight loops
+4. **Lane Width**: Keep consistent to reduce geometry variations
+5. **Testing**: Always test at 60 FPS target
+
+### Physics Best Practices
+
+- **Maximum Climb**: π/60 radians without boost
+- **Safe Descent**: π/40 radians (steeper feels like falling)
+- **Minimum Lane Width**: 6 units for stability
+- **Banking Limits**: π/4 radians (45°) maximum
+- **Always Reset Banking**: Return to 0 after turns
+
+## 📊 Performance Metrics
+
+### Target Performance
+- **FPS**: 60+ on mid-range hardware
+- **Physics**: 60Hz update rate
+- **Render Budget**: <16ms per frame
+- **Draw Calls**: <100 per frame
+- **Triangle Count**: <500k visible
+
+### Monitoring Tools
+- Built-in FPS counter (top-right corner)
+- Stats.js integration for detailed metrics
+- Chrome DevTools Performance profiler compatible
+
+## 🤝 Contributing
+
+### Code Style
+- ES6 modules with clear exports
+- Descriptive variable names
+- Comments for complex logic
+- Performance annotations for critical paths
+
+### Testing Checklist
+- [ ] Track completes without errors
+- [ ] Maintains 60 FPS throughout
+- [ ] Physics behavior stable
+- [ ] Visual design consistent
+- [ ] No console errors
+
+## 📦 Dependencies
+
+- **three**: ^0.169.0 - 3D graphics engine
+- **cannon-es**: ^0.20.0 - Physics engine  
+- **vite**: ^6.0.3 - Build tool
+- **stats.js**: (bundled) - Performance monitoring
+
+## 🎯 Future Enhancements
+
+- [ ] Multiplayer racing support
+- [ ] Ghost replay system
+- [ ] Track editor
+- [ ] Mobile touch controls
+- [ ] VR support
+- [ ] Procedural track generation
+- [ ] Global leaderboards
+
+## 📄 License
+
+MIT License - See LICENSE file for details
+
+## 🙏 Acknowledgments
+
+- Three.js community for excellent documentation
+- Cannon.js for robust physics
+- PlayCanvas for inspiration
+- All playtesters for valuable feedback
 
 ---
 
-**Next Agent Task**: Generate the next circuit (10 tracks) following established patterns while innovating within proven constraints. Use this entire repository as context for understanding successful track design, technical implementation, and user experience patterns.
+**Current Version**: 1.2.0 (January 2025)
+**Status**: Production Ready
+**Performance**: Optimized for 60+ FPS

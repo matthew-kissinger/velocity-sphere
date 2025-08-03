@@ -67,13 +67,13 @@ export default {
       addSegment({ pitchDelta: -Math.PI / 45 }); // Gentle landing
     }
     
-    // Recovery straight with boost
+    // Recovery straight
     for (let i = 0; i < 10; i++) {
       addSegment({
         yawDelta: 0,
         pitchDelta: 0,
-        rollDelta: 0,
-        isBoost: (i >= 2 && i <= 5) // Boost in middle
+        rollDelta: 0
+        // Removed speed pads
       });
     }
     
@@ -114,7 +114,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        isBoost: (i === 5), // One boost before finish
+        // Removed speed pad
         isFinishLine: (i === 19)
       });
     }

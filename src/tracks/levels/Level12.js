@@ -38,11 +38,11 @@ export default {
       });
     }
     
-    // Dune descent with speed boost
+    // Dune descent
     for (let i = 0; i < 15; i++) {
       addSegment({ 
-        pitchDelta: -Math.PI / 60,
-        isBoost: (i >= 5 && i <= 8) // Boost on descent
+        pitchDelta: -Math.PI / 60
+        // Removed speed pads
       });
     }
     
@@ -133,11 +133,11 @@ export default {
     
     // Big dune section - larger elevation changes
     for (let dune = 0; dune < 3; dune++) {
-      // Climb with boost assistance
+      // Climb
       for (let i = 0; i < 15; i++) {
         addSegment({ 
-          pitchDelta: Math.PI / 65,
-          isBoost: (i === 0 || i === 1) // Boost at start of climb
+          pitchDelta: Math.PI / 65
+          // Removed speed pads
         });
       }
       
@@ -157,13 +157,13 @@ export default {
       }
     }
     
-    // Mirage straightaway - high speed section
+    // Mirage straightaway
     for (let i = 0; i < 20; i++) {
       addSegment({
         yawDelta: 0,
         pitchDelta: 0,
-        rollDelta: 0,
-        isBoost: (i >= 8 && i <= 11) // Boost zone
+        rollDelta: 0
+        // Removed speed pads
       });
     }
     

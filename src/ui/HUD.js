@@ -38,22 +38,23 @@ export class HUD {
   updateLevel(level) {
     this.currentLevel = level;
     if (this.elements.levelDisplay) {
-      this.elements.levelDisplay.textContent = `Level: ${level}`;
+      this.elements.levelDisplay.textContent = `LVL ${level}`;
     }
   }
 
   updateTimer(time) {
     if (this.elements.timer) {
-      this.elements.timer.textContent = `Time: ${time.toFixed(2)} s`;
+      this.elements.timer.textContent = `${time.toFixed(2)}s`;
+      this.elements.timer.classList.add('primary');
     }
   }
 
   updateBestTime(bestTime) {
     if (this.elements.bestTime) {
       if (bestTime !== null) {
-        this.elements.bestTime.textContent = `Best: ${bestTime.toFixed(2)} s`;
+        this.elements.bestTime.textContent = `BEST ${bestTime.toFixed(2)}s`;
       } else {
-        this.elements.bestTime.textContent = 'Best: --:--';
+        this.elements.bestTime.textContent = 'BEST --';
       }
     }
   }
@@ -62,7 +63,7 @@ export class HUD {
     // Update speedometer
     if (this.elements.speedometer) {
       const speed = gameData.speed || 0;
-      this.elements.speedometer.textContent = `Speed: ${speed.toFixed(1)}`;
+      this.elements.speedometer.textContent = `${speed.toFixed(0)} m/s`;
       
       // Add visual feedback for high speeds
       if (speed > 50) {
@@ -80,13 +81,13 @@ export class HUD {
     // Update boost status
     if (this.elements.boostStatus) {
       if (gameData.isBoostActive) {
-        this.elements.boostStatus.textContent = 'Boost: ACTIVE!';
+        this.elements.boostStatus.textContent = 'BOOST!';
         this.elements.boostStatus.classList.add('boost-active');
       } else if (gameData.boostCooldown > 0) {
-        this.elements.boostStatus.textContent = `Boost: ${gameData.boostCooldown.toFixed(1)}s`;
+        this.elements.boostStatus.textContent = `${gameData.boostCooldown.toFixed(1)}s`;
         this.elements.boostStatus.classList.remove('boost-active');
       } else {
-        this.elements.boostStatus.textContent = 'Boost: Ready';
+        this.elements.boostStatus.textContent = 'SHIFT';
         this.elements.boostStatus.classList.remove('boost-active');
       }
     }

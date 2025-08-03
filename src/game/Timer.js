@@ -5,9 +5,10 @@
 import * as THREE from 'three';
 
 export class Timer {
-  constructor(hud, completionScreen) {
+  constructor(hud, completionScreen, game = null) {
     this.hud = hud;
     this.completionScreen = completionScreen;
+    this.game = game;
     
     // Timer state
     this.raceStarted = false;
@@ -24,9 +25,13 @@ export class Timer {
     
     // Detection state
     this.lastFinishSide = null;
+    this.hasBeenNearFinish = false;
     
-    // Constants
-    this.DETECTION_DISTANCE = 5.0;
+    // Constants - tighter detection area matching gate visuals
+    this.DETECTION_DISTANCE = 2.0;  // Reduced from 5.0 for tighter detection
+    this.DETECTION_HEIGHT = 10.0;   // Height from track surface (gate is 20 high, starts 2 above track)
+    this.DETECTION_WIDTH = 15.0;    // Width tolerance for finish line
+    this.DETECTION_BOTTOM = 2.0;    // Bottom of gate starts 2 units above track
     this.MOVEMENT_THRESHOLD = 0.5; // Minimum movement to start timer
   }
 
@@ -53,6 +58,7 @@ export class Timer {
     this.currentTime = 0;
     this.hasMovedYet = false;
     this.lastFinishSide = null;
+    this.hasBeenNearFinish = false;
     
     if (this.hud) {
       this.hud.updateTimer(0);
@@ -96,22 +102,58 @@ export class Timer {
     const distanceToPlane = this.getDistanceToPlane(ballPosition, this.finishPlane);
     const currentSide = Math.sign(distanceToPlane);
     
-    // Debug logging for finish line detection
+    // Check if ball is within the finish gate area (height and width bounds)
+    const relativePos = ballPosition.clone().sub(this.finishPlane.position);
+    
+    // Calculate position relative to plane's coordinate system
+    const planeForward = this.finishPlane.normal.clone().normalize();
+    
+    // Create right and up vectors based on the plane's orientation
+    // If the plane is mostly vertical, use world up
+    const worldUp = new THREE.Vector3(0, 1, 0);
+    const planeRight = new THREE.Vector3();
+    const planeUp = new THREE.Vector3();
+    
+    // Calculate right vector (perpendicular to forward and world up)
+    planeRight.crossVectors(worldUp, planeForward).normalize();
+    
+    // Calculate actual up vector (perpendicular to forward and right)
+    planeUp.crossVectors(planeForward, planeRight).normalize();
+    
+    const widthOffset = Math.abs(relativePos.dot(planeRight));
+    const heightOffset = relativePos.dot(planeUp); // Not absolute - we need actual height
+    
+    // Check if within the gate bounds (accounting for gate starting above track)
+    // Make detection more forgiving for height
+    const isWithinGate = widthOffset < this.DETECTION_WIDTH && 
+                         heightOffset > -this.DETECTION_HEIGHT && 
+                         heightOffset < (this.DETECTION_HEIGHT * 3);
+    
+    // Debug logging for finish line detection when close
     if (Math.abs(distanceToPlane) < this.DETECTION_DISTANCE * 2) {
-      console.log(`Near finish line: distance=${distanceToPlane.toFixed(2)}, side=${currentSide}, lastSide=${this.lastFinishSide}, raceStarted=${this.raceStarted}`);
+      console.log(`Near finish: dist=${distanceToPlane.toFixed(2)}, width=${widthOffset.toFixed(1)}, height=${heightOffset.toFixed(1)}, inGate=${isWithinGate}, side=${currentSide}`);
     }
     
-    // Finish the race when crossing the finish line
-    if (this.lastFinishSide !== null && 
-        this.lastFinishSide !== currentSide && // Changed to detect any side change
+    // Mark when we've been near the finish at least once (to prevent false triggers at start)
+    if (Math.abs(distanceToPlane) < this.DETECTION_DISTANCE * 4 && !this.hasBeenNearFinish && this.raceStarted) {
+      this.hasBeenNearFinish = true;
+      console.log('Now tracking finish line crossing');
+    }
+    
+    // Finish the race when crossing through the gate
+    if (this.hasBeenNearFinish &&
+        this.lastFinishSide !== null && 
+        this.lastFinishSide !== currentSide &&
         Math.abs(distanceToPlane) < this.DETECTION_DISTANCE &&
+        isWithinGate &&
         this.raceStarted) {
       
-      console.log('Finish line crossed!');
+      console.log('Finish line crossed through gate!');
       this.finishRace();
     }
     
-    if (Math.abs(distanceToPlane) < this.DETECTION_DISTANCE * 3) {
+    // Update last side when within reasonable distance
+    if (Math.abs(distanceToPlane) < this.DETECTION_DISTANCE * 2 && isWithinGate) {
       this.lastFinishSide = currentSide;
     }
   }
@@ -150,16 +192,22 @@ export class Timer {
     
     console.log(`Race finished! Time: ${raceTime.toFixed(2)}s${isNewBest ? ' (NEW BEST!)' : ''}`);
     
+    // Pause the game immediately
+    if (this.game) {
+      this.game.pause();
+    }
+    
     if (this.hud) {
       this.hud.showRaceFinish(raceTime, isNewBest);
       this.hud.updateBestTime(this.getBestTime());
     }
     
-    // Show completion screen
+    // Show completion screen immediately (no delay)
     if (this.completionScreen) {
-      setTimeout(() => {
-        this.completionScreen.show(raceTime, this.getBestTime(), isNewBest);
-      }, 1500); // Delay to let the notification show first
+      console.log('Showing completion screen with time:', raceTime);
+      this.completionScreen.show(raceTime, this.getBestTime(), isNewBest);
+    } else {
+      console.error('No completion screen available in Timer!');
     }
   }
 

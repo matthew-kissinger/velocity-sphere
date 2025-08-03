@@ -42,8 +42,8 @@ export class Camera {
     this.controls.enablePan = false;
     this.controls.minDistance = 15;
     this.controls.maxDistance = 50;
-    this.controls.maxPolarAngle = Math.PI * 0.9; // Allow looking from above
-    this.controls.minPolarAngle = 0.1; // Prevent gimbal lock
+    this.controls.maxPolarAngle = Math.PI * 0.99; // Allow looking from almost directly below
+    this.controls.minPolarAngle = Math.PI * 0.01; // Allow looking from almost directly above
     this.controls.autoRotate = false; // Ensure auto-rotation is off
     this.controls.autoRotateSpeed = 0;
   }

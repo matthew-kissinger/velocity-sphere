@@ -307,7 +307,10 @@ export class TrackBuilder {
           tubularSegments: opts.tubularSegments || 32,
           isGap: opts.isGap || false,
           isStartLine: opts.isStartLine || false,
-          isFinishLine: opts.isFinishLine || false
+          isFinishLine: opts.isFinishLine || false,
+          isBouncePad: opts.isBouncePad || false,
+          isBoost: opts.isBoost || false,
+          isBoostPowerup: opts.isBoostPowerup || false
         });
         
         // Update position if nextPosition is provided
@@ -342,7 +345,10 @@ export class TrackBuilder {
         tubularSegments: opts.tubularSegments || 32,
         isGap: opts.isGap || false,
         isStartLine: opts.isStartLine || false,
-        isFinishLine: opts.isFinishLine || false
+        isFinishLine: opts.isFinishLine || false,
+        isBouncePad: opts.isBouncePad || false,
+        isBoost: opts.isBoost || false,
+        isBoostPowerup: opts.isBoostPowerup || false
       });
       // Advance yaw/pitch/roll for next segment
       yaw   += opts.yawDelta   || 0;
@@ -541,6 +547,21 @@ export class TrackBuilder {
       if (segment.isFinishLine) {
         finishPlane = this.buildStartFinishLine(segment, false);
         console.log('Built finish plane:', finishPlane);
+      }
+      
+      // Handle bounce pads
+      if (segment.isBouncePad) {
+        this.buildBouncePad(segment);
+      }
+      
+      // Handle boost sections (speed pads)
+      if (segment.isBoost) {
+        this.buildBoostSection(segment);
+      }
+      
+      // Handle boost powerups
+      if (segment.isBoostPowerup) {
+        this.buildBoostPowerup(segment);
       }
     });
     
@@ -867,6 +888,222 @@ export class TrackBuilder {
     
     console.log(`✅ Created instanced walls: ${wallData.length} instances in 1 draw call`);
   }
+  
+  buildBouncePad(segment) {
+    segment.lanes.forEach(lane => {
+      const right = new THREE.Vector3(1, 0, 0).applyQuaternion(segment.orientation);
+      const lanePosition = segment.center.clone().add(right.clone().multiplyScalar(lane.offset));
+      
+      // Create bounce pad visual - bright cyan platform
+      const padGeometry = new THREE.BoxGeometry(lane.width, 0.3, this.SEGMENT_LENGTH);
+      const padMaterial = new THREE.MeshStandardMaterial({
+        color: 0x00ffff,
+        emissive: 0x00cccc,
+        emissiveIntensity: 0.5,
+        metalness: 0.8,
+        roughness: 0.2
+      });
+      
+      const padMesh = new THREE.Mesh(padGeometry, padMaterial);
+      padMesh.position.copy(lanePosition);
+      padMesh.position.y += this.TRACK_THICKNESS / 2 + 0.15; // Slightly above track
+      padMesh.quaternion.copy(segment.orientation);
+      
+      this.scene.add(padMesh);
+      this.trackMeshes.push(padMesh);
+      
+      // Create physics body for bounce detection
+      const padShape = new CANNON.Box(new CANNON.Vec3(lane.width/2, 0.15, this.SEGMENT_LENGTH/2));
+      const padBody = new CANNON.Body({ 
+        mass: 0,
+        type: CANNON.Body.STATIC,
+        shape: padShape
+      });
+      padBody.position.copy(padMesh.position);
+      padBody.quaternion.copy(segment.orientation);
+      padBody.userData = { isBouncePad: true };
+      
+      this.physicsWorld.addBody(padBody);
+      this.trackBodies.push(padBody);
+      
+      // Add glowing effect markers
+      const markerGeometry = new THREE.CylinderGeometry(0.5, 0.8, 0.1, 8);
+      const markerMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00ffff,
+        emissive: 0x00ffff
+      });
+      
+      // Add 4 corner markers
+      const markerPositions = [
+        { x: lane.width/2 - 1, z: this.SEGMENT_LENGTH/2 - 1 },
+        { x: -(lane.width/2 - 1), z: this.SEGMENT_LENGTH/2 - 1 },
+        { x: lane.width/2 - 1, z: -(this.SEGMENT_LENGTH/2 - 1) },
+        { x: -(lane.width/2 - 1), z: -(this.SEGMENT_LENGTH/2 - 1) }
+      ];
+      
+      markerPositions.forEach(pos => {
+        const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+        marker.position.copy(lanePosition);
+        marker.position.y += this.TRACK_THICKNESS / 2 + 0.35;
+        
+        const markerOffset = new THREE.Vector3(pos.x, 0, pos.z);
+        markerOffset.applyQuaternion(segment.orientation);
+        marker.position.add(markerOffset);
+        
+        marker.quaternion.copy(segment.orientation);
+        
+        this.scene.add(marker);
+        this.trackMeshes.push(marker);
+      });
+    });
+  }
+  
+  buildBoostSection(segment) {
+    segment.lanes.forEach(lane => {
+      const right = new THREE.Vector3(1, 0, 0).applyQuaternion(segment.orientation);
+      const lanePosition = segment.center.clone().add(right.clone().multiplyScalar(lane.offset));
+      
+      // SPEED PAD: Classic racing game style
+      const speedPadGroup = new THREE.Group();
+      
+      // Base pad - flat rectangular platform
+      const baseGeometry = new THREE.BoxGeometry(lane.width * 0.9, 0.3, this.SEGMENT_LENGTH * 0.8);
+      const baseMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0x333333 // Dark gray base
+      });
+      const base = new THREE.Mesh(baseGeometry, baseMaterial);
+      base.position.y = 0.15;
+      speedPadGroup.add(base);
+      
+      // Glowing top surface
+      const surfaceGeometry = new THREE.PlaneGeometry(lane.width * 0.8, this.SEGMENT_LENGTH * 0.7);
+      const surfaceMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0x00ffff, // Bright cyan
+        transparent: true,
+        opacity: 0.8
+      });
+      const surface = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
+      surface.position.y = 0.31; // Just above base
+      surface.rotateX(-Math.PI / 2);
+      speedPadGroup.add(surface);
+      
+      // Arrow chevrons on surface
+      for (let i = 0; i < 3; i++) {
+        const chevronGeometry = new THREE.ConeGeometry(0.4, 1.2, 3);
+        const chevronMaterial = new THREE.MeshBasicMaterial({ 
+          color: 0xffffff // White arrows
+        });
+        
+        const chevron = new THREE.Mesh(chevronGeometry, chevronMaterial);
+        chevron.position.set(0, 0.4, (i - 1) * 1.5);
+        chevron.rotateX(-Math.PI / 2); // Point forward along track direction
+        
+        speedPadGroup.add(chevron);
+      }
+      
+      // Side energy strips for extra visibility
+      for (let side = -1; side <= 1; side += 2) {
+        const stripGeometry = new THREE.BoxGeometry(0.2, 0.8, this.SEGMENT_LENGTH * 0.6);
+        const stripMaterial = new THREE.MeshBasicMaterial({ 
+          color: 0x00aaff,
+          transparent: true,
+          opacity: 0.7
+        });
+        
+        const strip = new THREE.Mesh(stripGeometry, stripMaterial);
+        strip.position.set(side * (lane.width * 0.4), 0.4, 0);
+        
+        speedPadGroup.add(strip);
+      }
+      
+      speedPadGroup.position.copy(lanePosition);
+      speedPadGroup.position.y += this.TRACK_THICKNESS / 2 + 0.1;
+      speedPadGroup.quaternion.copy(segment.orientation);
+      
+      // Store for animation
+      speedPadGroup.userData.isBoostPad = true;
+      
+      this.scene.add(speedPadGroup);
+      this.trackMeshes.push(speedPadGroup);
+      
+      // Create physics body for speed pad detection - thin trigger zone
+      const padShape = new CANNON.Box(new CANNON.Vec3(lane.width/2, 0.5, this.SEGMENT_LENGTH/2));
+      const padBody = new CANNON.Body({ 
+        mass: 0,
+        type: CANNON.Body.STATIC,
+        shape: padShape,
+        isTrigger: true // Make it a trigger so it doesn't cause collision bumps
+      });
+      padBody.position.copy(lanePosition);
+      padBody.position.y = lanePosition.y + this.TRACK_THICKNESS / 2 + 0.5; // Taller detection zone for slopes
+      padBody.quaternion.copy(segment.orientation);
+      padBody.userData = { isSpeedPad: true };
+      
+      this.physicsWorld.addBody(padBody);
+      this.trackBodies.push(padBody);
+    });
+  }
+  
+  buildBoostPowerup(segment) {
+    segment.lanes.forEach(lane => {
+      const right = new THREE.Vector3(1, 0, 0).applyQuaternion(segment.orientation);
+      const lanePosition = segment.center.clone().add(right.clone().multiplyScalar(lane.offset));
+      
+      // Create boost powerup visual - SIMPLIFIED: single sphere with shader
+      const orbGeometry = new THREE.SphereGeometry(1.8, 8, 6); // Much simpler geometry
+      
+      // Simple bright material that's always visible
+      const orbMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0xffff00, // Bright yellow - highly visible
+        transparent: false
+      });
+      
+      // Add animated rotation and floating
+      const orbGroup = new THREE.Group();
+      
+      // Create main orb
+      const orb = new THREE.Mesh(orbGeometry, orbMaterial);
+      orbGroup.add(orb);
+      
+      // Add glowing ring around it for extra visibility
+      const ringGeometry = new THREE.RingGeometry(2.2, 2.8, 8);
+      const ringMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0x00ff00, // Bright green ring
+        transparent: true,
+        opacity: 0.6,
+        side: THREE.DoubleSide
+      });
+      const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+      ring.rotateX(-Math.PI / 2); // Lie flat
+      orbGroup.add(ring);
+      
+      // Store for animation
+      orbGroup.userData.isAnimatedPowerup = true;
+      
+      orbGroup.position.copy(lanePosition);
+      orbGroup.position.y += this.TRACK_THICKNESS / 2 + 3;
+      
+      this.scene.add(orbGroup);
+      this.trackMeshes.push(orbGroup);
+      
+      // Create physics body for powerup detection - as a trigger/sensor only
+      const powerupShape = new CANNON.Sphere(2);
+      const powerupBody = new CANNON.Body({ 
+        mass: 0,
+        type: CANNON.Body.STATIC,
+        shape: powerupShape,
+        isTrigger: true  // This makes it a sensor that doesn't physically collide
+      });
+      powerupBody.position.copy(orbGroup.position);
+      powerupBody.userData = { isBoostPowerup: true, collected: false };
+      
+      this.physicsWorld.addBody(powerupBody);
+      this.trackBodies.push(powerupBody);
+      
+      // Store mesh reference for hiding when collected
+      powerupBody.userData.meshes = [orbGroup];
+    });
+  }
 
   buildStartFinishLine(segment, isStart) {
     const geometry = new THREE.PlaneGeometry(this.DEFAULT_WIDTH, 2);
@@ -984,20 +1221,103 @@ export class TrackBuilder {
     // Calculate the normal BEFORE rotation for correct plane detection
     const planeNormal = new THREE.Vector3(0, 0, 1).applyQuaternion(segment.orientation);
     
-    // Add a visible debug plane for finish line
+    // Add finish line visuals - clear and simple design
     if (!isStart) {
-      const debugGeometry = new THREE.PlaneGeometry(this.DEFAULT_WIDTH * 1.5, 10);
-      const debugMaterial = new THREE.MeshBasicMaterial({ 
-        color: 0x00ff00, 
-        side: THREE.DoubleSide,
-        opacity: 0.2,
-        transparent: true
+      // FINISH LINE ARCH - Two bright pillars and a banner
+      const pillarHeight = 15;
+      const pillarWidth = 1.5;
+      const trackWidth = this.DEFAULT_WIDTH + 4;
+      
+      // Left pillar
+      const pillarGeometry = new THREE.BoxGeometry(pillarWidth, pillarHeight, pillarWidth);
+      const pillarMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0xffffff // Bright white pillars
       });
-      const debugMesh = new THREE.Mesh(debugGeometry, debugMaterial);
-      debugMesh.position.copy(mesh.position);
-      debugMesh.quaternion.copy(segment.orientation);
-      this.scene.add(debugMesh);
-      this.trackMeshes.push(debugMesh);
+      
+      const leftPillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
+      const right = new THREE.Vector3(1, 0, 0).applyQuaternion(segment.orientation);
+      leftPillar.position.copy(mesh.position)
+        .add(right.clone().multiplyScalar(-trackWidth/2));
+      leftPillar.position.y += pillarHeight/2;
+      leftPillar.quaternion.copy(segment.orientation);
+      this.scene.add(leftPillar);
+      this.trackMeshes.push(leftPillar);
+      
+      // Right pillar
+      const rightPillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
+      rightPillar.position.copy(mesh.position)
+        .add(right.clone().multiplyScalar(trackWidth/2));
+      rightPillar.position.y += pillarHeight/2;
+      rightPillar.quaternion.copy(segment.orientation);
+      this.scene.add(rightPillar);
+      this.trackMeshes.push(rightPillar);
+      
+      // Top banner connecting pillars
+      const bannerGeometry = new THREE.BoxGeometry(trackWidth + pillarWidth, 2, 0.5);
+      const bannerMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0x00ff00 // Green for finish
+      });
+      
+      const banner = new THREE.Mesh(bannerGeometry, bannerMaterial);
+      banner.position.copy(mesh.position);
+      banner.position.y += pillarHeight;
+      banner.quaternion.copy(segment.orientation);
+      this.scene.add(banner);
+      this.trackMeshes.push(banner);
+      
+      // "FINISH" text on banner (using simple planes)
+      const textGeometry = new THREE.PlaneGeometry(trackWidth * 0.8, 1.5);
+      const textMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0x000000,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.8
+      });
+      const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+      textMesh.position.copy(banner.position);
+      textMesh.position.y -= 0.1;
+      const forward = new THREE.Vector3(0, 0, 1).applyQuaternion(segment.orientation);
+      textMesh.position.add(forward.clone().multiplyScalar(0.3));
+      textMesh.quaternion.copy(segment.orientation);
+      this.scene.add(textMesh);
+      this.trackMeshes.push(textMesh);
+      
+      // Checkered pattern on track
+      const checkerGeometry = new THREE.PlaneGeometry(trackWidth, 4);
+      const checkerMaterial = new THREE.MeshBasicMaterial({ 
+        map: this.checkeredTexture,
+        side: THREE.DoubleSide,
+        opacity: 0.95
+      });
+      const checkerMesh = new THREE.Mesh(checkerGeometry, checkerMaterial);
+      checkerMesh.position.copy(mesh.position);
+      checkerMesh.position.y += 0.02; // Just above track surface
+      checkerMesh.quaternion.copy(segment.orientation);
+      checkerMesh.rotateX(Math.PI / 2);
+      this.scene.add(checkerMesh);
+      this.trackMeshes.push(checkerMesh);
+      
+      // Add animated light strips on pillars for visibility
+      for (let i = 0; i < 3; i++) {
+        const lightGeometry = new THREE.BoxGeometry(pillarWidth * 1.2, 1, pillarWidth * 1.2);
+        const lightMaterial = new THREE.MeshBasicMaterial({ 
+          color: 0xffff00, // Yellow lights
+          transparent: true,
+          opacity: 0.8
+        });
+        
+        const leftLight = new THREE.Mesh(lightGeometry, lightMaterial);
+        leftLight.position.copy(leftPillar.position);
+        leftLight.position.y = 3 + i * 4;
+        this.scene.add(leftLight);
+        this.trackMeshes.push(leftLight);
+        
+        const rightLight = new THREE.Mesh(lightGeometry, lightMaterial);
+        rightLight.position.copy(rightPillar.position);
+        rightLight.position.y = 3 + i * 4;
+        this.scene.add(rightLight);
+        this.trackMeshes.push(rightLight);
+      }
     }
     
     return {
@@ -1150,6 +1470,48 @@ export class TrackBuilder {
     if (this.shaderManager) {
       this.shaderManager.updateUniforms(deltaTime, camera, resolution);
     }
+    
+    // Update simple animations for powerups and boost pads
+    const currentTime = performance.now() * 0.001; // Convert to seconds
+    this.trackMeshes.forEach(object => {
+      // Animate powerups (floating and rotation)
+      if (object.userData.isAnimatedPowerup) {
+        // Store original Y position if not stored
+        if (!object.userData.originalY) {
+          object.userData.originalY = object.position.y;
+        }
+        // Float gently around original position
+        object.position.y = object.userData.originalY + Math.sin(currentTime * 3.0) * 0.3;
+        object.rotation.y = currentTime * 2.0; // Rotate around Y axis
+      }
+      
+      // Animate boost pads (pulsing effects)
+      if (object.userData.isBoostPad) {
+        const pulse = Math.sin(currentTime * 4.0) * 0.3 + 0.7;
+        const fastPulse = Math.sin(currentTime * 8.0) * 0.2 + 0.8;
+        
+        // Pulse the glowing surface (child 1)
+        if (object.children[1]) {
+          object.children[1].material.opacity = pulse * 0.9;
+        }
+        
+        // Pulse the side strips (children 5 and 6)
+        if (object.children[5]) {
+          object.children[5].material.opacity = fastPulse * 0.7;
+        }
+        if (object.children[6]) {
+          object.children[6].material.opacity = fastPulse * 0.7;
+        }
+        
+        // Make chevron arrows pulse brighter
+        for (let i = 2; i <= 4; i++) {
+          if (object.children[i]) {
+            const brightness = pulse + 0.3;
+            object.children[i].material.color.setRGB(brightness, brightness, brightness);
+          }
+        }
+      }
+    });
   }
 
   /**

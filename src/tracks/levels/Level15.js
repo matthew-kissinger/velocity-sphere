@@ -34,12 +34,14 @@ export default {
         });
       }
       
-      // Thrilling drop through clouds
+      // Removed unnecessary bounce pad before drop
+      
+      // Thrilling drop through clouds - made less steep
       for (let i = 0; i < 15; i++) {
         addSegment({
-          pitchDelta: -Math.PI / 40, // Steep drop for speed
-          yawDelta: Math.sin(i * 0.1) * Math.PI / 100,
-          isBoost: (i === 0) // Boost at drop start
+          pitchDelta: -Math.PI / 50, // Less steep drop (was /40)
+          yawDelta: Math.sin(i * 0.1) * Math.PI / 100
+          // Removed speed pads from drop - gravity provides speed
         });
       }
       
@@ -55,11 +57,18 @@ export default {
     
     // Cloud hopping section - multiple jumps
     for (let hop = 0; hop < 5; hop++) {
+      // Add boost powerup before climb
+      if (hop === 0 || hop === 2) {
+        addSegment({
+          isBoostPowerup: true
+        });
+      }
+      
       // Approach cloud
       for (let i = 0; i < 6; i++) {
         addSegment({
-          pitchDelta: Math.PI / 45,
-          isBoost: (i === 0) // Boost for jump
+          pitchDelta: Math.PI / 50 // More manageable angle
+          // Removed speed pads from climb - use boost powerups instead
         });
       }
       // Gap between clouds

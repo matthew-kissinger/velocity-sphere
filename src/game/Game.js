@@ -37,6 +37,9 @@ export class Game {
   
   setCompletionScreen(completionScreen) {
     this.completionScreen = completionScreen;
+    // Now initialize timer with the completion screen
+    this.timer = new Timer(this.hud, this.completionScreen, this);
+    console.log('Timer initialized with completion screen');
   }
 
   async init() {
@@ -68,7 +71,9 @@ export class Game {
     // Set up ball fall callback
     this.ball.onFallOff = () => {
       console.log('Ball fell off - resetting timer');
-      this.timer.reset();
+      if (this.timer) {
+        this.timer.reset();
+      }
     };
 
     // Initialize track builder
@@ -80,7 +85,7 @@ export class Game {
 
     // Initialize UI
     this.hud = new HUD();
-    this.timer = new Timer(this.hud, this.completionScreen);
+    // Don't initialize timer here - wait until completion screen is set
 
     // Set up camera to follow ball
     this.camera.setTarget(this.ball.mesh);
@@ -95,11 +100,11 @@ export class Game {
     
     // Debug: manually trigger timer events
     window.addEventListener('keydown', (e) => {
-      if (e.key === 't') {
+      if (e.key === 't' && this.timer) {
         console.log('Debug: Manually starting timer');
         this.timer.startRace();
       }
-      if (e.key === 'f') {
+      if (e.key === 'f' && this.timer) {
         console.log('Debug: Manually finishing race');
         this.timer.finishRace();
       }
@@ -150,11 +155,15 @@ export class Game {
     }
     
     // Set up timer with track data and current level
-    console.log('Setting up timer with track data:', track);
-    this.timer.setTrack(track, this.currentLevel);
-    
-    // Initialize detection AFTER setTrack but BEFORE reset
-    this.timer.initializeDetection(this.ball.getPosition());
+    if (this.timer) {
+      console.log('Setting up timer with track data:', track);
+      this.timer.setTrack(track, this.currentLevel);
+      
+      // Initialize detection AFTER setTrack but BEFORE reset
+      this.timer.initializeDetection(this.ball.getPosition());
+    } else {
+      console.warn('Timer not initialized yet - completion screen not set');
+    }
 
     console.log(`Level ${level} loaded successfully`);
   }
@@ -163,12 +172,14 @@ export class Game {
     if (this.isRunning) return;
     
     this.isRunning = true;
+    document.body.classList.add('playing');
     this.animate();
     console.log('Game started');
   }
 
   stop() {
     this.isRunning = false;
+    document.body.classList.remove('playing');
     if (this.gameLoop) {
       cancelAnimationFrame(this.gameLoop);
       this.gameLoop = null;
@@ -176,9 +187,33 @@ export class Game {
     console.log('Game stopped');
   }
 
+  pause() {
+    if (!this.isRunning) return;
+    
+    this.isRunning = false;
+    document.body.classList.remove('playing'); // Show cursor when paused
+    if (this.gameLoop) {
+      cancelAnimationFrame(this.gameLoop);
+      this.gameLoop = null;
+    }
+    console.log('Game paused');
+  }
+
+  resume() {
+    if (this.isRunning) return;
+    
+    this.isRunning = true;
+    document.body.classList.add('playing'); // Hide cursor when playing
+    this.animate();
+    console.log('Game resumed');
+  }
+
   restart() {
     this.ball.reset();
-    this.timer.reset();
+    if (this.timer) {
+      this.timer.reset();
+      this.timer.initializeDetection(this.ball.body.position); // Re-initialize detection
+    }
     this.hud.reset();
   }
 
@@ -203,7 +238,9 @@ export class Game {
     this.camera.update();
 
     // Update timer
-    this.timer.update(this.ball.getPosition());
+    if (this.timer) {
+      this.timer.update(this.ball.getPosition());
+    }
 
     // Update HUD
     this.hud.update({

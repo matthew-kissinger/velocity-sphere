@@ -15,12 +15,12 @@ export default {
   performance: 'good',
   
   uniforms: {
-    mossColor: { value: new THREE.Color(0x2d5016) },
-    dirtColor: { value: new THREE.Color(0x4a3c28) },
-    leafColor: { value: new THREE.Color(0x8b7355) },
+    mossColor: { value: new THREE.Color(0x4a7c31) }, // Brighter green moss
+    dirtColor: { value: new THREE.Color(0x7a6450) }, // Lighter brown dirt
+    leafColor: { value: new THREE.Color(0xc89f63) }, // Brighter leaf color
     growthSpeed: { value: 0.3 },
-    mossAmount: { value: 0.6 },
-    naturalVariation: { value: 0.4 }
+    mossAmount: { value: 0.5 }, // Slightly less moss for better contrast
+    naturalVariation: { value: 0.3 } // Less variation for better visibility
   },
   
   vertexShader: `
@@ -146,15 +146,15 @@ export default {
       roots *= noise(uv * 100.0);
       groundColor *= 1.0 - roots * 0.2;
       
-      // Apply lighting with forest ambiance
+      // Apply lighting with forest ambiance - brighter overall
       vec3 lightDir = normalize(vec3(0.5, 1.0, 0.3));
-      float lighting = dot(vNormal, lightDir) * 0.3 + 0.7;
+      float lighting = dot(vNormal, lightDir) * 0.2 + 0.9; // Increased ambient light
       groundColor *= lighting;
       
-      // Add dappled sunlight effect
+      // Add dappled sunlight effect - more prominent
       float sunlight = noise(uv * 2.0 + time * growthSpeed * 0.5);
       sunlight = smoothstep(0.6, 0.8, sunlight);
-      groundColor += vec3(0.2, 0.15, 0.05) * sunlight * 0.3;
+      groundColor += vec3(0.3, 0.25, 0.1) * sunlight * 0.4; // Brighter sunlight patches
       
       // Subtle color variation over time (seasons)
       float seasonal = sin(time * growthSpeed * 0.2) * 0.1 + 0.9;

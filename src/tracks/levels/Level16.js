@@ -1,188 +1,149 @@
 /**
- * Level 16 - Cave Crystal
- * Underground crystal caverns with tight passages
- * Medium difficulty with unique underground challenges
+ * Level 16 - Cave Crystal (REDESIGNED)
+ * Underground crystal exploration with logical flow
+ * Medium difficulty with proper progression
  */
 
 export default {
   name: "Cave Crystal",
-  description: "Navigate the glowing crystal caverns deep underground",
+  description: "Explore the glowing crystal caverns in a thrilling underground race",
   difficulty: 4,
   shader: "crystal-surface",
   skybox: "crystal-cavern", // Vibrant crystal cave atmosphere
   
   generateTrack(addSegment) {
-    // Crystal cave entrance - exciting descent with curves
-    for (let i = 0; i < 20; i++) {
+    // Cave entrance - gentle slope into the cavern
+    for (let i = 0; i < 15; i++) {
       addSegment({
-        yawDelta: Math.sin(i * 0.1) * Math.PI / 80,
-        pitchDelta: i < 15 ? -Math.PI / 50 : -Math.PI / 100, // Clear descent, more exciting
-        rollDelta: Math.sin(i * 0.1) * Math.PI / 120,
-        isStartLine: (i === 0),
-        isBoost: (i === 10) // Early boost for momentum
+        yawDelta: 0,
+        pitchDelta: -Math.PI / 80, // Gentle descent
+        rollDelta: 0,
+        isStartLine: (i === 0)
       });
     }
     
-    // Tight cavern passage - narrow winding path
-    for (let i = 0; i < 30; i++) {
+    // First cavern chamber - wide turns with crystal formations
+    for (let i = 0; i < 25; i++) {
       addSegment({
-        yawDelta: Math.sin(i * 0.2) * Math.PI / 40, // Sinuous path
-        pitchDelta: Math.cos(i * 0.15) * Math.PI / 100, // Undulating floor
-        lanes: [{ offset: 0, width: 6 }] // Narrow passage
+        yawDelta: Math.sin(i * 0.15) * Math.PI / 60, // Gentle curves
+        pitchDelta: 0, // Flat for speed
+        isBoost: (i === 12) // Mid-section boost
       });
     }
     
-    // Crystal chamber - open area with multiple paths
-    // Split into three tunnels
-    for (let i = 0; i < 5; i++) {
-      const factor = i / 5;
-      addSegment({
-        lanes: [
-          { offset: -10 * factor, width: 5 }, // Left tunnel
-          { offset: 0, width: 6 },            // Center tunnel
-          { offset: 10 * factor, width: 5 }   // Right tunnel
-        ]
-      });
-    }
-    
-    // Different challenges per tunnel
-    for (let i = 0; i < 35; i++) {
-      if (i < 15) {
-        // All tunnels descend slightly
-        addSegment({
-          lanes: [
-            { offset: -10, width: 5 },
-            { offset: 0, width: 6 },
-            { offset: 10, width: 5 }
-          ],
-          pitchDelta: -Math.PI / 90,
-          yawDelta: Math.sin(i * 0.1) * Math.PI / 80
-        });
-      } else if (i < 25) {
-        // Center has stalactite gaps, sides wind more
-        addSegment({
-          lanes: [
-            { offset: -10, width: 5 },
-            { offset: 0, width: 6, isGap: (i === 18 || i === 22) },
-            { offset: 10, width: 5 }
-          ],
-          yawDelta: i % 2 ? Math.PI / 50 : -Math.PI / 50
-        });
-      } else {
-        // All paths climb back up
-        addSegment({
-          lanes: [
-            { offset: -10, width: 5 },
-            { offset: 0, width: 6 },
-            { offset: 10, width: 5 }
-          ],
-          pitchDelta: Math.PI / 80,
-          isBoost: (i === 25) // Boost to help climb
-        });
-      }
-    }
-    
-    // Merge tunnels
-    for (let i = 0; i < 5; i++) {
-      const factor = 1 - (i / 5);
-      addSegment({
-        lanes: [
-          { offset: -10 * factor, width: 5 },
-          { offset: 0, width: 6 },
-          { offset: 10 * factor, width: 5 }
-        ]
-      });
-    }
-    
-    // Underground river section - following water flow
-    for (let i = 0; i < 40; i++) {
-      const riverFlow = Math.sin(i * 0.1) * Math.PI / 50;
-      const descent = -Math.PI / 100; // Following water downhill
-      
-      addSegment({
-        yawDelta: riverFlow,
-        pitchDelta: descent,
-        rollDelta: riverFlow * 0.5, // Banking with the flow
-        isBoost: (i % 15 === 0) // Periodic water current boost
-      });
-    }
-    
-    // Crystal formation slalom
-    const crystalGates = [
-      { angle: Math.PI / 5, segments: 8 },    // 36° right
-      { angle: -Math.PI / 4, segments: 10 },  // 45° left
-      { angle: Math.PI / 3.5, segments: 9 },  // ~51° right
-      { angle: -Math.PI / 5.5, segments: 7 }, // ~33° left
-      { angle: Math.PI / 6, segments: 6 }     // 30° right
+    // Crystal gallery - sweeping turns around formations
+    const galleryTurns = [
+      { angle: Math.PI / 3, segments: 15 },    // 60° right
+      { angle: -Math.PI / 2.5, segments: 18 }, // 72° left
+      { angle: Math.PI / 4, segments: 12 },    // 45° right
+      { angle: -Math.PI / 3.5, segments: 14 }  // ~51° left
     ];
     
-    for (const gate of crystalGates) {
-      // Sharp turn around crystal
-      for (let i = 0; i < gate.segments; i++) {
-        addSegment({
-          yawDelta: gate.angle / gate.segments,
-          lanes: [{ offset: 0, width: 7 }] // Slightly narrow
+    for (const turn of galleryTurns) {
+      // Bank into turn
+      for (let i = 0; i < 3; i++) {
+        addSegment({ 
+          rollDelta: (turn.angle > 0 ? 1 : -1) * Math.PI / 60
         });
       }
       
-      // Brief straight
-      for (let i = 0; i < 2; i++) {
-        addSegment({ yawDelta: 0, pitchDelta: 0 });
+      // Execute turn around crystal formations
+      for (let i = 0; i < turn.segments; i++) {
+        addSegment({
+          yawDelta: turn.angle / turn.segments,
+          pitchDelta: Math.sin(i * 0.2) * Math.PI / 150, // Slight undulation
+          lanes: [{ offset: 0, width: 8 }] // Good width for medium difficulty
+        });
+      }
+      
+      // Exit bank
+      for (let i = 0; i < 3; i++) {
+        addSegment({ 
+          rollDelta: (turn.angle > 0 ? -1 : 1) * Math.PI / 60
+        });
+      }
+      
+      // Straight section between turns
+      for (let i = 0; i < 5; i++) {
+        addSegment({ 
+          isBoost: (i === 2) // Boost in straights
+        });
       }
     }
     
-    // The Great Chamber - massive cavern with continuous descent
-    // Speed-focused chamber racing
-    for (let section = 0; section < 3; section++) {
-      // Fast straightaway
-      for (let i = 0; i < 12; i++) {
-        addSegment({
-          yawDelta: 0,
-          pitchDelta: -Math.PI / 120, // Gentle descent for speed
-          isBoost: (i === 0) // Boost at section start
-        });
-      }
-      
-      // Thrilling drop
+    // Underground lake crossing - jumping between platforms
+    for (let platform = 0; platform < 4; platform++) {
+      // Platform approach
       for (let i = 0; i < 8; i++) {
         addSegment({
-          pitchDelta: -Math.PI / 35, // Steep drop
-          yawDelta: Math.sin(i * 0.2) * Math.PI / 100
+          pitchDelta: 0,
+          yawDelta: 0
         });
       }
       
-      // Banking turn
-      for (let i = 0; i < 10; i++) {
-        addSegment({
-          yawDelta: (section % 2 ? 1 : -1) * Math.PI / 40,
-          pitchDelta: i < 5 ? Math.PI / 100 : -Math.PI / 120,
-          rollDelta: (section % 2 ? 1 : -1) * Math.PI / 60
+      // Bounce pad for jump
+      addSegment({
+        isBouncePad: true
+      });
+      
+      // Gap over water
+      for (let i = 0; i < 3 + platform; i++) { // Gaps get longer
+        addSegment({ isGap: true });
+      }
+      
+      // Landing platform
+      for (let i = 0; i < 6; i++) {
+        addSegment({ 
+          pitchDelta: 0,
+          isBoost: (i === 3) // Boost after landing
         });
       }
     }
     
-    // Final crystal gauntlet - precision section
+    // Crystal slide section - flowing descent
     for (let i = 0; i < 30; i++) {
-      const narrowFactor = Math.sin(i * 0.3);
-      const width = 8 - Math.abs(narrowFactor) * 2; // Variable width
-      
+      const slideProgress = i / 30;
       addSegment({
-        yawDelta: narrowFactor * Math.PI / 60,
-        pitchDelta: Math.cos(i * 0.2) * Math.PI / 120,
-        lanes: [{ offset: 0, width: width }]
+        yawDelta: Math.sin(i * 0.15) * Math.PI / 50, // S-curves
+        pitchDelta: -Math.PI / 70, // Moderate descent
+        rollDelta: Math.sin(i * 0.15) * Math.PI / 80, // Banking
+        lanes: [{ offset: 0, width: 8 + slideProgress * 2 }], // Widening path
+        isBoost: (i % 10 === 5) // Regular boosts
       });
     }
     
-    // Crystal rapids finale - flowing descent to exit
-    for (let i = 0; i < 25; i++) {
-      const flowCurve = Math.sin(i * 0.2) * Math.PI / 60;
+    // Glowing crystal chamber - spectacular finish
+    // Wide open racing with gentle curves
+    for (let i = 0; i < 40; i++) {
+      const chamberFlow = Math.sin(i * 0.1) * Math.PI / 60;
       addSegment({
-        yawDelta: flowCurve,
-        pitchDelta: -Math.PI / 100, // Gentle flowing descent
-        rollDelta: flowCurve * 0.5,
-        isBoost: (i >= 15 && i <= 18), // Speed boost finale
-        lanes: [{ offset: Math.sin(i * 0.15) * 1, width: 8 }], // Flowing path
-        isFinishLine: (i === 24)
+        yawDelta: chamberFlow,
+        pitchDelta: 0, // Flat for final speed section
+        rollDelta: chamberFlow * 0.5,
+        lanes: [{ offset: 0, width: 12 }], // Wide open racing
+        isBoost: (i % 8 === 0) // Frequent boosts
+      });
+    }
+    
+    // Exit tunnel - climb back to surface
+    for (let i = 0; i < 20; i++) {
+      addSegment({
+        yawDelta: 0,
+        pitchDelta: Math.PI / 100, // Gentle climb
+        rollDelta: 0,
+        isBoost: (i === 5 || i === 15) // Help with the climb
+      });
+    }
+    
+    // Final sprint to daylight
+    for (let i = 0; i < 15; i++) {
+      addSegment({
+        yawDelta: 0,
+        pitchDelta: 0,
+        rollDelta: 0,
+        lanes: [{ offset: 0, width: 10 }],
+        isBoost: (i >= 8 && i <= 11), // Final boost zone
+        isFinishLine: (i === 14)
       });
     }
   }

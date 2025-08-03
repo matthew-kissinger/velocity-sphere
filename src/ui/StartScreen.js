@@ -61,11 +61,12 @@ export class StartScreen {
   }
 
   addAnimations() {
-    // Add staggered animation to track buttons
+    // Remove slow animations - buttons should be instantly clickable
     const trackButtons = this.element.querySelectorAll('.track-btn');
-    trackButtons.forEach((button, index) => {
-      button.style.animationDelay = `${index * 0.1}s`;
-      button.classList.add('track-btn-animate');
+    trackButtons.forEach((button) => {
+      // No animation delay - instant availability
+      button.style.opacity = '1';
+      button.style.transform = 'translateY(0)';
     });
   }
 
@@ -128,28 +129,15 @@ export class StartScreen {
   }
 }
 
-// Add animations CSS
+// Add animations CSS (minimal, no delays)
 const style = document.createElement('style');
 style.textContent = `
-  .track-btn-animate {
-    animation: trackButtonSlide 0.8s ease-out forwards;
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  @keyframes trackButtonSlide {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   .start-screen.fade-in {
-    animation: fadeIn 0.5s ease-out;
+    animation: fadeIn 0.3s ease-out;
   }
 
   .start-screen.fade-out {
-    animation: fadeOut 0.5s ease-out;
+    animation: fadeOut 0.3s ease-out;
   }
 
   @keyframes fadeIn {
