@@ -113,6 +113,20 @@ export class InputManager {
         this.state.jumpRequested = true;
       });
     }
+    
+    // Initialize boost button
+    const boostButton = document.getElementById('boostButton');
+    if (boostButton) {
+      boostButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.state.boostRequested = true;
+      });
+      
+      boostButton.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        this.state.boostRequested = true;
+      });
+    }
   }
   
   hideMobileControls() {

@@ -714,14 +714,18 @@ kbd {
     left: 20px;
   }
   
-  .jump-button {
-    width: 75px;
-    height: 75px;
+  .action-buttons {
     bottom: 50px;
     right: 20px;
+    gap: 10px;
   }
   
-  .jump-icon {
+  .jump-button, .boost-button {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .jump-icon, .boost-icon {
     font-size: 1.5rem;
   }
 }
@@ -1059,11 +1063,19 @@ body.playing {
   pointer-events: all;
 }
 
-/* Jump Button */
-.jump-button {
+/* Action Buttons Container */
+.action-buttons {
   position: absolute;
   bottom: 60px;
   right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  pointer-events: all;
+}
+
+/* Jump Button */
+.jump-button {
   width: 85px;
   height: 85px;
   border-radius: 50%;
@@ -1077,7 +1089,6 @@ body.playing {
   font-size: 0.65rem;
   letter-spacing: 1px;
   cursor: pointer;
-  pointer-events: all;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1086,6 +1097,34 @@ body.playing {
   transition: all 0.15s ease;
   box-shadow: 
     0 0 20px rgba(0, 255, 255, 0.1),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Boost Button */
+.boost-button {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 136, 0, 0.3);
+  color: rgba(255, 136, 0, 0.8);
+  font-family: var(--font-main);
+  font-weight: 300;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: all 0.15s ease;
+  box-shadow: 
+    0 0 20px rgba(255, 136, 0, 0.1),
     inset 0 0 10px rgba(0, 0, 0, 0.5);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -1101,12 +1140,29 @@ body.playing {
     inset 0 0 30px rgba(0, 255, 255, 0.3);
 }
 
-.jump-icon {
+.boost-button:active {
+  transform: scale(0.95);
+  background: rgba(255, 136, 0, 0.2);
+  border-color: rgba(255, 136, 0, 0.8);
+  box-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(255, 136, 0, 0.4),
+    inset 0 0 30px rgba(255, 136, 0, 0.3);
+}
+
+.boost-button.cooldown {
+  opacity: 0.4;
+  border-color: rgba(128, 128, 128, 0.3);
+  color: rgba(128, 128, 128, 0.5);
+  pointer-events: none;
+}
+
+.jump-icon, .boost-icon {
   font-size: 2rem;
   line-height: 1;
 }
 
-.jump-text {
+.jump-text, .boost-text {
   font-size: 0.7rem;
   opacity: 0.8;
 }

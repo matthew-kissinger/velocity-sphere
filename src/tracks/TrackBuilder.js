@@ -1265,22 +1265,7 @@ export class TrackBuilder {
       this.scene.add(banner);
       this.trackMeshes.push(banner);
       
-      // "FINISH" text on banner (using simple planes)
-      const textGeometry = new THREE.PlaneGeometry(trackWidth * 0.8, 1.5);
-      const textMaterial = new THREE.MeshBasicMaterial({ 
-        color: 0x000000,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.8
-      });
-      const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-      textMesh.position.copy(banner.position);
-      textMesh.position.y -= 0.1;
-      const forward = new THREE.Vector3(0, 0, 1).applyQuaternion(segment.orientation);
-      textMesh.position.add(forward.clone().multiplyScalar(0.3));
-      textMesh.quaternion.copy(segment.orientation);
-      this.scene.add(textMesh);
-      this.trackMeshes.push(textMesh);
+      // Removed text mesh that was causing visual glitch
       
       // Checkered pattern on track
       const checkerGeometry = new THREE.PlaneGeometry(trackWidth, 4);
