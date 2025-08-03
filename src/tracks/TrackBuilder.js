@@ -1238,7 +1238,7 @@ export class TrackBuilder {
       const right = new THREE.Vector3(1, 0, 0).applyQuaternion(segment.orientation);
       leftPillar.position.copy(mesh.position)
         .add(right.clone().multiplyScalar(-trackWidth/2));
-      leftPillar.position.y += pillarHeight/2;
+      leftPillar.position.y = mesh.position.y + pillarHeight/2;  // Set absolute, don't add
       leftPillar.quaternion.copy(segment.orientation);
       this.scene.add(leftPillar);
       this.trackMeshes.push(leftPillar);
@@ -1247,7 +1247,7 @@ export class TrackBuilder {
       const rightPillar = new THREE.Mesh(pillarGeometry, pillarMaterial);
       rightPillar.position.copy(mesh.position)
         .add(right.clone().multiplyScalar(trackWidth/2));
-      rightPillar.position.y += pillarHeight/2;
+      rightPillar.position.y = mesh.position.y + pillarHeight/2;  // Set absolute, don't add
       rightPillar.quaternion.copy(segment.orientation);
       this.scene.add(rightPillar);
       this.trackMeshes.push(rightPillar);
@@ -1260,7 +1260,7 @@ export class TrackBuilder {
       
       const banner = new THREE.Mesh(bannerGeometry, bannerMaterial);
       banner.position.copy(mesh.position);
-      banner.position.y += pillarHeight;
+      banner.position.y = mesh.position.y + pillarHeight;  // Set absolute position
       banner.quaternion.copy(segment.orientation);
       this.scene.add(banner);
       this.trackMeshes.push(banner);
@@ -1292,14 +1292,16 @@ export class TrackBuilder {
         });
         
         const leftLight = new THREE.Mesh(lightGeometry, lightMaterial);
-        leftLight.position.copy(leftPillar.position);
-        leftLight.position.y = 3 + i * 4;
+        leftLight.position.x = leftPillar.position.x;
+        leftLight.position.z = leftPillar.position.z;
+        leftLight.position.y = mesh.position.y + 3 + i * 4;  // Position relative to track
         this.scene.add(leftLight);
         this.trackMeshes.push(leftLight);
         
         const rightLight = new THREE.Mesh(lightGeometry, lightMaterial);
-        rightLight.position.copy(rightPillar.position);
-        rightLight.position.y = 3 + i * 4;
+        rightLight.position.x = rightPillar.position.x;
+        rightLight.position.z = rightPillar.position.z;
+        rightLight.position.y = mesh.position.y + 3 + i * 4;  // Position relative to track
         this.scene.add(rightLight);
         this.trackMeshes.push(rightLight);
       }
