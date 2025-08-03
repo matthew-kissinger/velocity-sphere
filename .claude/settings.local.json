@@ -23,7 +23,8 @@
       "Bash(deploy.bat)",
       "Bash(npm install)",
       "Bash(powershell:*)",
-      "Bash(cmd:*)"
+      "Bash(cmd:*)",
+      "Bash(curl:*)"
     ],
     "deny": []
   }
