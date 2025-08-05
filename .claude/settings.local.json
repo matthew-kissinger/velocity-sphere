@@ -26,7 +26,8 @@
       "Bash(cmd:*)",
       "Bash(curl:*)",
       "Bash(ls:*)",
-      "Bash(git config:*)"
+      "Bash(git config:*)",
+      "Bash(./deploy.bat)"
     ],
     "deny": []
   }
