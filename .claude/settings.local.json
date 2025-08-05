@@ -24,7 +24,9 @@
       "Bash(npm install)",
       "Bash(powershell:*)",
       "Bash(cmd:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(ls:*)",
+      "Bash(git config:*)"
     ],
     "deny": []
   }

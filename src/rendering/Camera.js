@@ -42,8 +42,8 @@ export class Camera {
     this.controls.enablePan = false;
     this.controls.minDistance = 15;
     this.controls.maxDistance = 50;
-    this.controls.maxPolarAngle = Math.PI * 0.99; // Allow looking from almost directly below
-    this.controls.minPolarAngle = Math.PI * 0.01; // Allow looking from almost directly above
+    this.controls.maxPolarAngle = Math.PI - 0.01; // Allow looking from almost directly below
+    this.controls.minPolarAngle = 0.01; // Allow looking from almost directly above
     this.controls.autoRotate = false; // Ensure auto-rotation is off
     this.controls.autoRotateSpeed = 0;
   }
@@ -65,8 +65,12 @@ export class Camera {
       
       // Maintain the same relative offset to preserve orbital position
       this.camera.position.copy(this.target.position).add(offset);
+      
+      // Important: tell OrbitControls to update without changing the camera position
+      this.camera.lookAt(this.controls.target);
     }
     
+    // Update controls without letting it reposition the camera
     this.controls.update();
   }
 
@@ -119,8 +123,8 @@ export class Camera {
         spherical.theta -= movementX * 0.002;
         spherical.phi += movementY * 0.002;
         
-        // Clamp phi to prevent flipping
-        spherical.phi = Math.max(0.1, Math.min(Math.PI * 0.45, spherical.phi));
+        // Clamp phi to match OrbitControls limits
+        spherical.phi = Math.max(0.01, Math.min(Math.PI - 0.01, spherical.phi));
         
         // Apply new position
         const offset = new THREE.Vector3();
