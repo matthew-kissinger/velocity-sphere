@@ -9,7 +9,7 @@ export default {
   description: "Navigate frozen canyons and ice bridges at high speed",
   difficulty: 5,
   shader: "ice-crystal",
-  skybox: "arctic-night",
+  skybox: "arctic-wind",
   
   generateTrack(addSegment) {
     // Ice canyon entrance - wide starting area

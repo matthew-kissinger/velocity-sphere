@@ -9,7 +9,7 @@ export default {
   description: "Flow through tranquil gardens with natural curves",
   difficulty: 1,
   shader: "zen-sand",
-  skybox: "sunset-garden",
+  skybox: "sunset-vibes",
   
   generateTrack(addSegment) {
     // Garden entrance - peaceful straight

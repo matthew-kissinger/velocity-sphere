@@ -10,7 +10,7 @@ export default {
   difficulty: 5,
   shader: "cyber-tunnel",
 
-  skybox: "cave-depths",
+  skybox: "neon-underground",
   
   generateTrack(addSegment) {
     // Descent begins

@@ -10,7 +10,7 @@ export default {
   difficulty: 3,
   shader: "neon-pulse",
 
-  skybox: "cave-depths",
+  skybox: "neon-underground",
   
   generateTrack(addSegment) {
     // Station platform start

@@ -8,9 +8,8 @@ export default {
   name: "Neon Tubes",
   description: "Race through glowing cylindrical passages",
   difficulty: 3,
-  shader: "laser-grid",
-
-  skybox: "cave-depths",
+  shader: "neon-tubes",
+  skybox: "neon-underground",
   
   generateTrack(addSegment) {
     // Start in main tunnel

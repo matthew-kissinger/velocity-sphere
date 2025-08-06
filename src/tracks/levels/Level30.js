@@ -9,7 +9,7 @@ export default {
   description: "The final test of speed and skill",
   difficulty: 5,
   shader: "infinity-flow",
-  skybox: "cosmic-infinite",
+  skybox: "space-deep",
   
   generateTrack(addSegment) {
     // Opening stretch - 15 segments
