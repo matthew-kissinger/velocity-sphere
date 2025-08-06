@@ -1,120 +1,148 @@
 /**
- * Level 15 - Cloud Nine
- * Sky-high cloud racing with ethereal jumps
- * Medium difficulty with floating platform elements
+ * Level 15 - Cloud Nine (COMPLETELY REDESIGNED)
+ * Flowing cloud racing with smooth curves and gentle jumps
+ * Medium difficulty with emphasis on flow and speed
  */
 
 export default {
   name: "Cloud Nine",
   description: "Float through the clouds in this heavenly race",
   difficulty: 3,
-  shader: "cloud-surface", // High contrast cloud shader
+  shader: "cloud-surface",
   skybox: "aurora-dance",
   
   generateTrack(addSegment) {
-    // Cloud entrance - floating start with gentle curves
-    for (let i = 0; i < 20; i++) {
+    // Cloud entrance - wide floating start
+    for (let i = 0; i < 25; i++) {
       addSegment({
-        yawDelta: Math.sin(i * 0.15) * Math.PI / 100,
-        pitchDelta: Math.sin(i * 0.1) * Math.PI / 200, // Very gentle undulation
-        rollDelta: Math.cos(i * 0.15) * Math.PI / 150,
+        yawDelta: 0,
+        pitchDelta: 0,
+        rollDelta: 0,
         isStartLine: (i === 0),
-        isBoost: (i === 15) // Boost to start the action
+        lanes: [{ offset: 0, width: 12 }]
       });
     }
     
-    // Cloud drops and flow - speed focused
-    for (let drop = 0; drop < 4; drop++) {
-      // Gentle approach
-      for (let i = 0; i < 8; i++) {
-        addSegment({
-          pitchDelta: 0,
-          yawDelta: Math.sin(i * 0.2 + drop) * Math.PI / 80,
-          rollDelta: Math.cos(i * 0.2) * Math.PI / 150
-        });
-      }
-      
-      // Removed unnecessary bounce pad before drop
-      
-      // Thrilling drop through clouds - made less steep
-      for (let i = 0; i < 15; i++) {
-        addSegment({
-          pitchDelta: -Math.PI / 50, // Less steep drop (was /40)
-          yawDelta: Math.sin(i * 0.1) * Math.PI / 100
-          // Removed speed pads from drop - gravity provides speed
-        });
-      }
-      
-      // Recovery and flow
-      for (let i = 0; i < 10; i++) {
-        addSegment({
-          pitchDelta: i < 5 ? Math.PI / 80 : 0, // Gentle recovery
-          yawDelta: Math.PI / 120,
-          rollDelta: (drop % 2 ? 1 : -1) * Math.PI / 100
-        });
-      }
-    }
-    
-    // Cloud hopping section - multiple jumps
-    for (let hop = 0; hop < 5; hop++) {
-      // Add boost powerup before climb
-      if (hop === 0 || hop === 2) {
-        addSegment({
-          isBoostPowerup: true
-        });
-      }
-      
-      // Approach cloud
-      for (let i = 0; i < 6; i++) {
-        addSegment({
-          pitchDelta: Math.PI / 50 // More manageable angle
-          // Removed speed pads from climb - use boost powerups instead
-        });
-      }
-      // Gap between clouds
-      for (let i = 0; i < 3 + hop; i++) { // Gaps get longer
-        addSegment({ isGap: true });
-      }
-      // Landing cloud
-      for (let i = 0; i < 6; i++) {
-        addSegment({ pitchDelta: -Math.PI / 45 });
-      }
-      // Cloud surface
-      for (let i = 0; i < 5; i++) {
-        addSegment({ 
-          yawDelta: hop % 2 ? Math.PI / 80 : -Math.PI / 80
-        });
-      }
-    }
-    
-    // Wind current section - flowing curves
-    const windCurrents = [
-      { angle: Math.PI / 2, segments: 25, lift: true },
-      { angle: -Math.PI / 1.8, segments: 30, lift: false },
-      { angle: Math.PI / 2.5, segments: 20, lift: true }
+    // SECTION 1: Cloud Wave Racing
+    // Flowing S-curves through clouds
+    const cloudWaves = [
+      { angle: Math.PI / 3, segments: 30, climb: false },
+      { angle: -Math.PI / 2.5, segments: 35, climb: true },
+      { angle: Math.PI / 2.8, segments: 28, climb: false },
+      { angle: -Math.PI / 3, segments: 25, climb: true }
     ];
     
-    for (const current of windCurrents) {
-      for (let i = 0; i < current.segments; i++) {
-        const progress = i / current.segments;
+    for (const wave of cloudWaves) {
+      // Smooth banking into turn
+      for (let i = 0; i < 5; i++) {
         addSegment({
-          yawDelta: current.angle / current.segments,
-          pitchDelta: current.lift ? 
-            Math.sin(progress * Math.PI) * Math.PI / 100 : 
-            -Math.sin(progress * Math.PI) * Math.PI / 100,
-          rollDelta: Math.sin(progress * Math.PI) * Math.PI / 60 * (current.angle > 0 ? 1 : -1)
+          rollDelta: (wave.angle > 0 ? 1 : -1) * Math.PI / 100,
+          lanes: [{ offset: 0, width: 10 }]
+        });
+      }
+      
+      // Flowing turn with gentle elevation changes
+      for (let i = 0; i < wave.segments; i++) {
+        const progress = i / wave.segments;
+        addSegment({
+          yawDelta: wave.angle / wave.segments,
+          pitchDelta: wave.climb ? 
+            Math.sin(progress * Math.PI) * Math.PI / 150 : 
+            -Math.sin(progress * Math.PI) * Math.PI / 200,
+          rollDelta: 0,
+          lanes: [{ offset: 0, width: 9 }]
+        });
+      }
+      
+      // Exit banking
+      for (let i = 0; i < 5; i++) {
+        addSegment({
+          rollDelta: (wave.angle > 0 ? -1 : 1) * Math.PI / 100,
+          lanes: [{ offset: 0, width: 10 }]
+        });
+      }
+      
+      // Straight recovery
+      for (let i = 0; i < 8; i++) {
+        addSegment({
+          yawDelta: 0,
+          pitchDelta: 0,
+          rollDelta: 0
         });
       }
     }
     
-    // Rainbow bridge finale
+    // SECTION 2: Cloud Speedway
+    // Fast straight with gentle hills
+    for (let i = 0; i < 40; i++) {
+      const hillPhase = i / 40;
+      addSegment({
+        yawDelta: Math.sin(i * 0.05) * Math.PI / 200, // Very gentle weaving
+        pitchDelta: Math.sin(hillPhase * Math.PI * 2) * Math.PI / 100,
+        rollDelta: 0,
+        lanes: [{ offset: 0, width: 11 }]
+      });
+    }
+    
+    // SECTION 3: Rainbow Run
+    // Colorful curved descent through clouds
+    for (let i = 0; i < 50; i++) {
+      const rainbowPhase = i / 50;
+      addSegment({
+        yawDelta: Math.PI / 100, // Gentle continuous turn
+        pitchDelta: -Math.PI / 180, // Very gentle descent
+        rollDelta: Math.PI / 150, // Slight banking
+        lanes: [{ 
+          offset: Math.sin(rainbowPhase * Math.PI * 2) * 2, 
+          width: 10 
+        }]
+      });
+    }
+    
+    // SECTION 4: Cloud Gardens
+    // Wide sweeping turns through cloud formations
+    for (let garden = 0; garden < 3; garden++) {
+      // Garden entrance
+      for (let i = 0; i < 10; i++) {
+        addSegment({
+          yawDelta: 0,
+          pitchDelta: 0,
+          rollDelta: 0,
+          lanes: [{ offset: 0, width: 12 }]
+        });
+      }
+      
+      // Circular garden path
+      const gardenDir = garden % 2 ? 1 : -1;
+      for (let i = 0; i < 20; i++) {
+        addSegment({
+          yawDelta: gardenDir * Math.PI / 20, // 180° turn
+          pitchDelta: Math.sin(i * 0.3) * Math.PI / 200,
+          rollDelta: gardenDir * Math.PI / 80,
+          lanes: [{ offset: 0, width: 10 }]
+        });
+      }
+    }
+    
+    // SECTION 5: Sunset Sprint
+    // Final high-speed section
     for (let i = 0; i < 30; i++) {
       addSegment({
         yawDelta: 0,
-        pitchDelta: Math.sin(i * 0.2) * Math.PI / 150,
+        pitchDelta: i < 15 ? -Math.PI / 150 : Math.PI / 150, // Gentle dip and rise
         rollDelta: 0,
-        isBoost: (i >= 15 && i <= 20),
-        isFinishLine: (i === 29)
+        lanes: [{ offset: 0, width: 12 }]
+      });
+    }
+    
+    // Cloud plaza finish
+    for (let i = 0; i < 20; i++) {
+      addSegment({
+        yawDelta: 0,
+        pitchDelta: 0,
+        rollDelta: 0,
+        lanes: [{ offset: 0, width: 14 }],
+        isFinishLine: (i === 19)
       });
     }
   }

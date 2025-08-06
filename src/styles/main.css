@@ -359,6 +359,13 @@ html, body {
   box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
 }
 
+/* Circuit Epsilon - Neon Underground Theme */
+.circuit-epsilon .track-number {
+  background: linear-gradient(135deg, #ff00ff, #00ffff);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.5), 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
 .track-name {
   font-size: 0.85rem;
   font-weight: 600;

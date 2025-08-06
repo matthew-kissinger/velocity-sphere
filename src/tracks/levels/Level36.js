@@ -9,7 +9,6 @@ export default {
   description: "Flow through endless fields beneath dancing lights",
   difficulty: 5,
   shader: "aurora-zen",
-  railShader: "aurora-rails", // Special glowing rails for visibility
   skybox: "aurora-dance",
   
   generateTrack(addSegment) {
@@ -45,7 +44,7 @@ export default {
               pitchDelta: elevation,
               rollDelta: curve * 0.5, // Natural banking
               lanes: [{ offset: 0, width: 16 }],
-              isBoost: (i % 15 === 7)
+              // No boost needed - natural flow
             });
           }
           break;
@@ -77,7 +76,7 @@ export default {
               yawDelta: Math.sin(plateauProgress * Math.PI * 1.5) * Math.PI / 90,
               pitchDelta: 0, // Flat on top
               lanes: [{ offset: 0, width: 20 }], // Extra wide on plateau
-              isBoostPowerup: (i === section.length / 2)
+              // No powerup needed
             });
           }
           break;
@@ -90,7 +89,7 @@ export default {
               pitchDelta: -Math.PI / 100 * (1 - descentProgress * 0.5), // Easing descent
               yawDelta: 0,
               lanes: [{ offset: 0, width: 15 }],
-              isBoost: (i >= 20 && i <= 25)
+              // No boost needed - descent provides speed
             });
           }
           break;
@@ -116,9 +115,9 @@ export default {
         
         addSegment({
           lanes: [
-            { offset: -16 + flow * 3, width: 12 },
+            { offset: -16, width: 12 }, // Fixed offset for performance
             { offset: 0, width: 14 },
-            { offset: 16 - flow * 3, width: 12 }
+            { offset: 16, width: 12 }
           ],
           yawDelta: flow * Math.PI / 150,
           pitchDelta: Math.sin(flowProgress * Math.PI * 4) * Math.PI / 300
@@ -158,7 +157,6 @@ export default {
         yawDelta: 0,
         pitchDelta: -Math.sin(corridorProgress * Math.PI) * Math.PI / 150, // Gentle dip
         lanes: [{ offset: 0, width: 15 + corridorProgress * 10 }], // Expanding width
-        isBoost: (i >= 25 && i <= 30),
         isFinishLine: (i === 34)
       });
     }

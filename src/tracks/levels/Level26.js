@@ -59,8 +59,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 10 }],
-        isBoostPowerup: (i === 5)
+        lanes: [{ offset: 0, width: 10 }]
       });
     }
     
@@ -86,8 +85,7 @@ export default {
         addSegment({
           pitchDelta: i < 3 ? -Math.PI / 60 : 0,
           rollDelta: 0,
-          lanes: [{ offset: 0, width: 11 }],
-          isBoost: (i === 4 && skip === 1)
+          lanes: [{ offset: 0, width: 11 }]
         });
       }
     }
@@ -116,8 +114,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 11 }],
-        isBoost: (i >= 8 && i <= 12)
+        lanes: [{ offset: 0, width: 11 }]
       });
     }
     
@@ -131,7 +128,8 @@ export default {
           yawDelta: direction * Math.PI / 27,
           pitchDelta: -Math.PI / 120,
           rollDelta: 0,
-          lanes: [{ offset: 0, width: 9 }]
+          lanes: [{ offset: 0, width: 9 }],
+          isBoost: (i >= 5) // Speed pads for steep sections
         });
       }
       
@@ -141,7 +139,7 @@ export default {
           yawDelta: 0,
           pitchDelta: 0,
           rollDelta: 0,
-          isBoostPowerup: (i === 1 && cascade === 0)
+          isBoost: (i === 0) // Extra boost after descent
         });
       }
     }
@@ -170,8 +168,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 10 }],
-        isBoostPowerup: (i === 7)
+        lanes: [{ offset: 0, width: 10 }]
       });
     }
     
@@ -184,7 +181,8 @@ export default {
         yawDelta: Math.PI / 15 * spiralRadius,
         pitchDelta: -Math.PI / 200,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 10 }] // Fixed width for performance
+        lanes: [{ offset: 0, width: 10 }], // Fixed width for performance
+        isBoost: (i > 10 && i < 15) // Speed pads for spiral descent
       });
     }
     
@@ -205,7 +203,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 12 }],
-        isBoost: (i >= 8 && i <= 14),
         isFinishLine: (i === 19)
       });
     }

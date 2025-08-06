@@ -7,7 +7,7 @@
 export default {
   name: "Harmony Circuit",
   description: "Find perfect balance in the ultimate tranquil race",
-  difficulty: 6,
+  difficulty: 5,
   shader: "rainbow-flow",
   skybox: "aurora-dance",
   
@@ -49,7 +49,7 @@ export default {
           yawDelta: curve.angle / curve.segments,
           pitchDelta: Math.sin(progress * Math.PI * 2) * Math.PI / 300,
           lanes: [{ offset: 0, width: widthFlow }],
-          isBoost: (i === Math.floor(curve.segments / 2))
+          // No boost needed - perfect flow
         });
       }
       
@@ -89,14 +89,14 @@ export default {
         
         addSegment({
           lanes: [
-            { offset: -18 + wave * 2, width: 10 }, // Outer left
-            { offset: -6 + wave, width: 10 },      // Inner left
-            { offset: 6 - wave, width: 10 },       // Inner right
-            { offset: 18 - wave * 2, width: 10 }   // Outer right
+            { offset: -18, width: 10 }, // Outer left - fixed offset
+            { offset: -6, width: 10 },   // Inner left - fixed offset
+            { offset: 6, width: 10 },    // Inner right - fixed offset
+            { offset: 18, width: 10 }    // Outer right - fixed offset
           ],
           yawDelta: Math.sin(pathProgress * Math.PI * 3) * Math.PI / 200,
           pitchDelta: Math.cos(pathProgress * Math.PI * 2) * Math.PI / 400,
-          isBoostPowerup: (i === 35) // Center paths converge here
+          // No powerup needed
         });
       } else {
         // Graceful merge
@@ -112,40 +112,25 @@ export default {
       }
     }
     
-    // The Meditation Spiral - ascending double helix
-    const helixSegments = 60;
+    // The Meditation Spiral - simplified for performance
+    const helixSegments = 40; // Reduced from 60
     for (let i = 0; i < helixSegments; i++) {
       const helixProgress = i / helixSegments;
-      const helixAngle = Math.PI * 3 * helixProgress; // 1.5 rotations
       
-      // Create double helix with elevation
-      if (i % 2 === 0) {
-        // Main path
-        addSegment({
-          yawDelta: Math.PI * 3 / helixSegments,
-          pitchDelta: Math.PI / 150, // Gentle climb
-          rollDelta: Math.sin(helixAngle) * Math.PI / 60,
-          lanes: [{ offset: 0, width: 14 }]
-        });
-      } else {
-        // Crossing paths
-        addSegment({
-          yawDelta: Math.PI * 3 / helixSegments,
-          pitchDelta: Math.PI / 150,
-          rollDelta: Math.sin(helixAngle) * Math.PI / 60,
-          lanes: [
-            { offset: -8, width: 10 },
-            { offset: 8, width: 10 }
-          ]
-        });
-      }
+      // Simplified single path spiral
+      addSegment({
+        yawDelta: Math.PI * 2 / helixSegments, // 1 rotation instead of 1.5
+        pitchDelta: Math.PI / 150, // Gentle climb
+        rollDelta: Math.sin(helixProgress * Math.PI * 2) * Math.PI / 60,
+        lanes: [{ offset: 0, width: 14 }]
+      });
     }
     
     // The Harmony Platform - central gathering
     for (let i = 0; i < 25; i++) {
       addSegment({
         lanes: [{ offset: 0, width: 30 }], // Massive platform
-        isBoost: (i >= 10 && i <= 15)
+        // No boost needed - harmony platform
       });
     }
     
@@ -164,7 +149,7 @@ export default {
           addSegment({
             pitchDelta: -Math.PI / 200,
             lanes: [{ offset: 0, width: 16 }],
-            isBoost: (i === Math.floor(section.straight / 2))
+            // No boost needed
           });
         }
       } else {
@@ -181,19 +166,18 @@ export default {
       }
     }
     
-    // The Unity Finale - all paths become one
-    for (let i = 0; i < 40; i++) {
-      const finaleProgress = i / 40;
+    // The Unity Finale - simplified for performance
+    for (let i = 0; i < 30; i++) { // Reduced from 40
+      const finaleProgress = i / 30;
       
-      // Create expanding lotus pattern
-      const lotusWidth = 18 + finaleProgress * 12 + Math.sin(finaleProgress * Math.PI * 4) * 2;
+      // Simplified expanding width
+      const finalWidth = 18 + finaleProgress * 12;
       
       addSegment({
-        yawDelta: Math.sin(finaleProgress * Math.PI * 2) * Math.PI / 300,
-        pitchDelta: -Math.sin(finaleProgress * Math.PI) * Math.PI / 400,
-        lanes: [{ offset: 0, width: lotusWidth }],
-        isBoost: (i >= 30 && i <= 35),
-        isFinishLine: (i === 39)
+        yawDelta: 0, // Straight finish
+        pitchDelta: 0,
+        lanes: [{ offset: 0, width: finalWidth }],
+        isFinishLine: (i === 29)
       });
     }
   }

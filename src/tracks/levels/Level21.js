@@ -86,8 +86,7 @@ export default {
       addSegment({
         yawDelta: wave * Math.PI / 80, // Gentler turns
         pitchDelta: Math.sin(i * 0.2) * Math.PI / 150, // Smaller elevation changes
-        rollDelta: wave * Math.PI / 120, // Much less banking
-        isBoost: (i === 20) // Quantum acceleration point
+        rollDelta: wave * Math.PI / 120 // Much less banking
       });
     }
     
@@ -155,7 +154,7 @@ export default {
             { offset: 0, width: 8 },
             { offset: 10, width: 6 }
           ],
-          isBoost: (i === 12 && true) // Center lane boost
+          // No boost needed - choosing lanes is the challenge
         });
       } else {
         // Collapse back to single state
@@ -173,8 +172,7 @@ export default {
     // Quantum leap finale - big jump with dimensional shift
     for (let i = 0; i < 8; i++) {
       addSegment({ 
-        pitchDelta: Math.PI / 40,
-        isBoost: (i === 6)
+        pitchDelta: Math.PI / 40
       });
     }
     
@@ -194,7 +192,6 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        isBoost: (i >= 10 && i <= 15),
         isFinishLine: (i === 19)
       });
     }

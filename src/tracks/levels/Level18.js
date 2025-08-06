@@ -1,13 +1,13 @@
 /**
- * Level 18 - Magma Core
+ * Level 18 - Magma Core (REDESIGNED SECOND HALF)
  * Deep earth core racing with lava flows
- * EXTREME difficulty with advanced movement techniques required
+ * EXTREME difficulty but fair and achievable
  */
 
 export default {
   name: "Magma Core",
   description: "Race through the molten heart of the earth",
-  difficulty: 6, // Moved to extreme difficulty
+  difficulty: 6,
   shader: "lava-flow",
   skybox: "lava-storm",
   
@@ -27,7 +27,7 @@ export default {
       addSegment({
         yawDelta: Math.sin(i * 0.15) * Math.PI / 35,
         pitchDelta: Math.cos(i * 0.1) * Math.PI / 90,
-        lanes: [{ offset: 0, width: 8 }] // Tube width
+        lanes: [{ offset: 0, width: 8 }]
       });
     }
     
@@ -83,101 +83,147 @@ export default {
       });
     }
     
-    // Geothermal vent section - periodic eruptions
-    for (let vent = 0; vent < 5; vent++) {
-      // Approach vent
-      for (let i = 0; i < 8; i++) {
-        addSegment({
-          yawDelta: 0,
-          pitchDelta: 0
-        });
-      }
-      
-      // Vent eruption jump
-      for (let i = 0; i < 6; i++) {
-        addSegment({
-          pitchDelta: Math.PI / 35,
-          // No boost needed - natural momentum from jump
-        });
-      }
-      
-      // Airborne over lava
-      for (let i = 0; i < 3 + vent; i++) { // Gaps get longer
-        addSegment({ isGap: true });
-      }
-      
-      // Landing
-      for (let i = 0; i < 6; i++) {
-        addSegment({ pitchDelta: -Math.PI / 35 });
-      }
+    // ==== COMPLETELY REDESIGNED SECOND HALF ====
+    
+    // SECTION 4: Obsidian Canyon
+    // Racing through cooled lava formations
+    for (let i = 0; i < 25; i++) {
+      addSegment({
+        yawDelta: 0,
+        pitchDelta: 0,
+        rollDelta: 0,
+        lanes: [{ offset: 0, width: 10 }]
+      });
     }
     
-    // Molten metal river - following flow
-    const riverBends = [
-      { angle: Math.PI / 2.5, segments: 25, descend: true },
-      { angle: -Math.PI / 2, segments: 30, descend: false },
-      { angle: Math.PI / 3, segments: 20, descend: true }
+    // Canyon weaving - sharp but manageable turns
+    const canyonTurns = [
+      { angle: Math.PI / 2.5, segments: 20 },
+      { angle: -Math.PI / 3, segments: 18 },
+      { angle: Math.PI / 2.8, segments: 22 },
+      { angle: -Math.PI / 2.2, segments: 25 }
     ];
     
-    for (const bend of riverBends) {
-      for (let i = 0; i < bend.segments; i++) {
-        const progress = i / bend.segments;
+    for (const turn of canyonTurns) {
+      // Bank into turn
+      for (let i = 0; i < 4; i++) {
         addSegment({
-          yawDelta: bend.angle / bend.segments,
-          pitchDelta: bend.descend ? -Math.PI / 120 : Math.PI / 150,
-          rollDelta: Math.sin(progress * Math.PI) * Math.PI / 40 * (bend.angle > 0 ? 1 : -1),
-          isBoost: (i === 10 && bend.angle > 0) // Only boost on right turns for path choice
-        });
-      }
-    }
-    
-    // Core chamber - descending spiral around magma spouts
-    for (let spout = 0; spout < 4; spout++) {
-      // Spiral descent around magma column
-      for (let i = 0; i < 15; i++) {
-        addSegment({
-          yawDelta: Math.PI / 20, // Tight spiral
-          pitchDelta: -Math.PI / 60, // Continuous descent
-          rollDelta: Math.PI / 50, // Banking into turn
+          rollDelta: (turn.angle > 0 ? 1 : -1) * Math.PI / 60,
           lanes: [{ offset: 0, width: 9 }]
         });
       }
       
-      // Drop between levels
-      for (let i = 0; i < 5; i++) {
-        addSegment({ 
-          pitchDelta: -Math.PI / 30,
-          // Natural drop momentum
+      // Execute turn with varied width
+      for (let i = 0; i < turn.segments; i++) {
+        const progress = i / turn.segments;
+        addSegment({
+          yawDelta: turn.angle / turn.segments,
+          pitchDelta: Math.sin(progress * Math.PI * 2) * Math.PI / 150,
+          rollDelta: 0,
+          lanes: [{ 
+            offset: 0, 
+            width: 8 + Math.sin(progress * Math.PI) * 2 
+          }]
         });
       }
       
-      // Recovery arc
-      for (let i = 0; i < 5; i++) {
-        addSegment({ pitchDelta: Math.PI / 60 });
+      // Exit bank
+      for (let i = 0; i < 4; i++) {
+        addSegment({
+          rollDelta: (turn.angle > 0 ? -1 : 1) * Math.PI / 60,
+          lanes: [{ offset: 0, width: 9 }]
+        });
+      }
+      
+      // Short straight
+      for (let i = 0; i < 10; i++) {
+        addSegment({
+          yawDelta: 0,
+          pitchDelta: 0,
+          rollDelta: 0
+        });
       }
     }
     
-    // Lava river finale - challenging but fair descent
-    for (let i = 0; i < 30; i++) {
-      const riverCurve = Math.sin(i * 0.15) * Math.PI / 45;
+    // SECTION 5: Magma Rapids
+    // Fast flowing section with gentle curves
+    for (let i = 0; i < 60; i++) {
+      const flowPhase = i / 60;
+      const rapidFlow = Math.sin(flowPhase * Math.PI * 4);
+      
       addSegment({
-        yawDelta: riverCurve,
-        pitchDelta: -Math.PI / 60, // More manageable descent
-        rollDelta: riverCurve * 0.4, // Less extreme banking
-        isBoost: (i === 15), // Single strategic boost mid-section
-        lanes: [{ offset: Math.sin(i * 0.2) * 1.5, width: 8 }], // Slightly less variation
+        yawDelta: rapidFlow * Math.PI / 80,
+        pitchDelta: -Math.PI / 200 + Math.sin(i * 0.1) * Math.PI / 300,
+        rollDelta: rapidFlow * Math.PI / 120,
+        lanes: [{ 
+          offset: 0,
+          width: 10
+        }],
+        isBoost: (i > 20 && i < 25) || (i > 40 && i < 45)
       });
     }
     
-    // Final approach - level out for finish
-    for (let i = 0; i < 15; i++) {
+    // SECTION 6: Volcanic Ascent
+    // Climbing out of the magma chamber
+    for (let climb = 0; climb < 3; climb++) {
+      // Approach ramp
+      for (let i = 0; i < 15; i++) {
+        addSegment({
+          yawDelta: 0,
+          pitchDelta: 0,
+          rollDelta: 0,
+          lanes: [{ offset: 0, width: 11 }]
+        });
+      }
+      
+      // Climbing section with switchback
+      for (let i = 0; i < 20; i++) {
+        addSegment({
+          yawDelta: 0,
+          pitchDelta: Math.PI / 100,
+          rollDelta: 0,
+          lanes: [{ offset: 0, width: 9 }],
+          isBoost: (i > 12 && i < 16)
+        });
+      }
+      
+      // Switchback turn
+      const switchDir = climb % 2 ? 1 : -1;
+      for (let i = 0; i < 15; i++) {
+        addSegment({
+          yawDelta: switchDir * Math.PI / 15,
+          pitchDelta: 0,
+          rollDelta: switchDir * Math.PI / 60,
+          lanes: [{ offset: 0, width: 10 }]
+        });
+      }
+    }
+    
+    // SECTION 7: Eruption Escape
+    // Final sprint to the surface
+    for (let i = 0; i < 40; i++) {
+      const escapePhase = i / 40;
+      
+      addSegment({
+        yawDelta: Math.sin(i * 0.15) * Math.PI / 100,
+        pitchDelta: Math.PI / 120,
+        rollDelta: 0,
+        lanes: [{ 
+          offset: 0, 
+          width: 10 + escapePhase * 2
+        }],
+        isBoost: (i > 25 && i < 30)
+      });
+    }
+    
+    // Surface breakthrough - victory runway
+    for (let i = 0; i < 20; i++) {
       addSegment({
         yawDelta: 0,
-        pitchDelta: i < 5 ? -Math.PI / 100 : 0, // Gentle level out
+        pitchDelta: i < 5 ? Math.PI / 150 : 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 10 }], // Wider for finish
-        isBoost: (i >= 5 && i <= 10), // Final boost
-        isFinishLine: (i === 14)
+        lanes: [{ offset: 0, width: 14 }],
+        isFinishLine: (i === 19)
       });
     }
   }

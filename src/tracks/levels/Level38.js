@@ -37,7 +37,7 @@ export default {
         for (let i = 0; i < section.straight; i++) {
           addSegment({
             lanes: [{ offset: 0, width: 15 }],
-            isBoost: (i === Math.floor(section.straight / 2))
+            // No boost needed
           });
         }
       } else {
@@ -73,8 +73,7 @@ export default {
         yawDelta: gentleWeave,
         pitchDelta: 0,
         lanes: [{ offset: 0, width: 20 }], // Very wide beach section
-        isBoost: (i === 17), // Just one boost pad instead of consecutive
-        isBoostPowerup: (i === 30)
+        // No boost needed on beach
       });
     }
     
@@ -132,19 +131,31 @@ export default {
         pitchDelta: Math.sin(ridgeProgress * Math.PI * 3) * Math.PI / 250,
         rollDelta: ridgeCurve * 0.6,
         lanes: [{ offset: 0, width: 15 }],
-        isBoost: (i % 15 === 7)
+        // No boost needed - scenic ridge
       });
     }
     
-    // Lighthouse curve - dramatic sweep around lighthouse
-    const lighthouseSegments = 40;
-    for (let i = 0; i < lighthouseSegments; i++) {
-      const lighthouseProgress = i / lighthouseSegments;
+    // Lighthouse approach - gentle curve
+    for (let i = 0; i < 15; i++) {
+      addSegment({
+        yawDelta: 0,
+        pitchDelta: 0,
+        rollDelta: 0,
+        lanes: [{ offset: 0, width: 15 }]
+      });
+    }
+    
+    // Lighthouse sweep - simplified without weird banking
+    for (let i = 0; i < 40; i++) {
+      const sweepProgress = i / 40;
+      
+      // Gentle S-curve instead of dramatic sweep
+      const yawDelta = Math.sin(sweepProgress * Math.PI) * Math.PI / 50;
       
       addSegment({
-        yawDelta: (Math.PI * 1.2) / lighthouseSegments, // 216 degree turn
+        yawDelta: yawDelta,
         pitchDelta: 0,
-        rollDelta: Math.PI / 60 * Math.sin(lighthouseProgress * Math.PI),
+        rollDelta: yawDelta * 0.5, // Mild banking that follows the curve
         lanes: [{ offset: 0, width: 14 }]
       });
     }
@@ -155,10 +166,9 @@ export default {
       
       addSegment({
         yawDelta: 0,
-        pitchDelta: -Math.sin(finaleProgress * Math.PI) * Math.PI / 300, // Gentle final dip
+        pitchDelta: 0, // Completely flat finish
         rollDelta: 0,
         lanes: [{ offset: 0, width: 16 + finaleProgress * 8 }], // Widening to finish
-        isBoost: (i >= 25 && i <= 30),
         isFinishLine: (i === 34)
       });
     }

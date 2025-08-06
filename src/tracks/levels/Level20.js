@@ -85,7 +85,7 @@ export default {
         addSegment({
           yawDelta: section.angle / section.segments,
           pitchDelta: Math.sin(progress * Math.PI * 2) * Math.PI / 150,
-          rollDelta: Math.sin(progress * Math.PI) * Math.PI / 60 * (section.angle > 0 ? 1 : -1),
+          rollDelta: Math.sin(progress * Math.PI) * Math.PI / 120 * (section.angle > 0 ? 1 : -1),
           lanes: [{ offset: 0, width: 9 }],
           // Natural flow through curves
         });
@@ -132,7 +132,7 @@ export default {
       addSegment({
         yawDelta: zigzag * Math.PI / 60,
         pitchDelta: -Math.PI / 200, // Slight descent for speed
-        rollDelta: zigzag * Math.PI / 80,
+        rollDelta: zigzag * Math.PI / 160,
         lanes: [{ offset: 0, width: 11 }],
         // High speed section - no boosts needed
       });
@@ -145,7 +145,7 @@ export default {
       addSegment({
         yawDelta: Math.PI / 40, // Gentle spiral
         pitchDelta: -Math.PI / 35 - (spiralProgress * Math.PI / 100), // Accelerating descent
-        rollDelta: Math.PI / 50,
+        rollDelta: Math.PI / 100,
         lanes: [{ offset: 0, width: 12 }], // Fixed width for performance
         // Gravity provides the speed
       });
@@ -161,7 +161,7 @@ export default {
       addSegment({
         yawDelta: Math.sin(i * 0.1) * Math.PI / 50,
         pitchDelta: Math.cos(i * 0.15) * Math.PI / 100,
-        rollDelta: Math.sin(i * 0.2) * Math.PI / 120,
+        rollDelta: Math.sin(i * 0.2) * Math.PI / 180,
         lanes: [{ 
           offset: 0, 
           width: 11
@@ -177,7 +177,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 15 }], // Extra wide victory lane
-        isBoost: (i === 12), // Single victory boost
         isFinishLine: (i === 19)
       });
     }

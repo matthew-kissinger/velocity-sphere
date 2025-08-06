@@ -26,8 +26,7 @@ export default {
     for (let i = 0; i < 25; i++) {
       addSegment({
         yawDelta: Math.sin(i * 0.15) * Math.PI / 60, // Gentle curves
-        pitchDelta: 0, // Flat for speed
-        isBoost: (i === 12) // Mid-section boost
+        pitchDelta: 0 // Flat for speed
       });
     }
     
@@ -65,9 +64,7 @@ export default {
       
       // Straight section between turns
       for (let i = 0; i < 5; i++) {
-        addSegment({ 
-          isBoost: (i === 2) // Boost in straights
-        });
+        addSegment({ });
       }
     }
     
@@ -81,10 +78,12 @@ export default {
         });
       }
       
-      // Bounce pad for jump
-      addSegment({
-        isBouncePad: true
-      });
+      // Ramp up for jump
+      for (let i = 0; i < 3; i++) {
+        addSegment({
+          pitchDelta: Math.PI / 50
+        });
+      }
       
       // Gap over water
       for (let i = 0; i < 3 + platform; i++) { // Gaps get longer
@@ -94,8 +93,7 @@ export default {
       // Landing platform
       for (let i = 0; i < 6; i++) {
         addSegment({ 
-          pitchDelta: 0,
-          isBoost: (i === 3) // Boost after landing
+          pitchDelta: i < 3 ? -Math.PI / 50 : 0
         });
       }
     }
@@ -107,8 +105,7 @@ export default {
         yawDelta: Math.sin(i * 0.15) * Math.PI / 50, // S-curves
         pitchDelta: -Math.PI / 70, // Moderate descent
         rollDelta: Math.sin(i * 0.15) * Math.PI / 80, // Banking
-        lanes: [{ offset: 0, width: 8 + slideProgress * 2 }], // Widening path
-        isBoost: (i % 10 === 5) // Regular boosts
+        lanes: [{ offset: 0, width: 8 + slideProgress * 2 }] // Widening path
       });
     }
     
@@ -120,19 +117,28 @@ export default {
         yawDelta: chamberFlow,
         pitchDelta: 0, // Flat for final speed section
         rollDelta: chamberFlow * 0.5,
-        lanes: [{ offset: 0, width: 12 }], // Wide open racing
-        isBoost: (i % 8 === 0) // Frequent boosts
+        lanes: [{ offset: 0, width: 12 }] // Wide open racing
       });
     }
     
     // Exit tunnel - climb back to surface
     for (let i = 0; i < 20; i++) {
-      addSegment({
-        yawDelta: 0,
-        pitchDelta: Math.PI / 100, // Gentle climb
-        rollDelta: 0,
-        isBoost: (i === 5 || i === 15) // Help with the climb
-      });
+      if (i === 5) {
+        // Single boost pad at start of climb (avoidable - center lane)
+        addSegment({
+          yawDelta: 0,
+          pitchDelta: Math.PI / 100,
+          rollDelta: 0,
+          lanes: [{ offset: 0, width: 4 }], // Half width - avoidable
+          isBoost: true
+        });
+      } else {
+        addSegment({
+          yawDelta: 0,
+          pitchDelta: Math.PI / 100, // Gentle climb
+          rollDelta: 0
+        });
+      }
     }
     
     // Final sprint to daylight
@@ -142,7 +148,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 10 }],
-        isBoost: (i >= 8 && i <= 11), // Final boost zone
         isFinishLine: (i === 14)
       });
     }

@@ -41,7 +41,7 @@ export default {
           pitchDelta: wave * Math.PI / 200, // Very subtle elevation changes
           rollDelta: 0,
           lanes: [{ offset: 0, width: 12 }],
-          isBoost: (i === Math.floor(section.segments / 2)) // Mid-section boost
+          // No boost needed - peaceful lake
         });
       }
       
@@ -82,7 +82,7 @@ export default {
             { offset: 15, width: 8 }     // Scenic right path
           ],
           yawDelta: centerCurve, // All paths follow center curve base
-          isBoostPowerup: (i === 30 && true) // Powerup on center path
+          // No powerup needed
         });
       } else {
         // Merge back together
@@ -101,7 +101,7 @@ export default {
     for (let i = 0; i < 25; i++) {
       addSegment({
         lanes: [{ offset: 0, width: 18 }], // Extra wide
-        isBoost: (i >= 10 && i <= 15) // Moonbeam boost zone
+        // No boost needed - natural moonbeam path
       });
     }
     
@@ -131,7 +131,7 @@ export default {
         pitchDelta: 0,
         yawDelta: Math.PI / 60, // Gentle curve behind falls
         lanes: [{ offset: 0, width: 14 }],
-        isBoost: (i === 10) // Hidden boost
+        // No boost needed behind waterfall
       });
     }
     
@@ -151,7 +151,6 @@ export default {
       addSegment({
         yawDelta: -Math.PI / reflectionCircle, // Half circle
         lanes: [{ offset: 0, width: 16 }],
-        isBoost: (i >= 20 && i <= 25), // Boost to finish
         isFinishLine: (i === reflectionCircle - 1)
       });
     }

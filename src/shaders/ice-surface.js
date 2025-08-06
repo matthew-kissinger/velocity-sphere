@@ -49,7 +49,7 @@ export default {
     uniform float reflectivity;
     uniform float frostAmount;
     uniform float crackIntensity;
-    uniform vec3 cameraPosition;
+    // cameraPosition is provided by ShaderManager as a global uniform
     
     varying vec3 vPosition;
     varying vec3 vNormal;

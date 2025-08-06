@@ -8,7 +8,7 @@ export default {
   name: "Forest Trail",
   description: "Navigate the twisting paths through ancient woods",
   difficulty: 3,
-  shader: "forest-floor",
+  shader: "bamboo-forest",
   skybox: "forest-canopy", // High contrast forest skybox
   
   generateTrack(addSegment) {
@@ -110,12 +110,11 @@ export default {
       });
     }
     
-    // Final forest section with boost
+    // Final forest section
     for (let i = 0; i < 20; i++) {
       addSegment({
         yawDelta: Math.sin(i * 0.15) * Math.PI / 60,
         pitchDelta: 0,
-        isBoost: (i >= 8 && i <= 11),
         isFinishLine: (i === 19)
       });
     }

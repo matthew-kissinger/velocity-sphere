@@ -31,7 +31,7 @@ export default {
         yawDelta: Math.sin(i * 0.1) * Math.PI / 120,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 9 * pulseEffect }] // Pulsing width for tunnel effect
+        lanes: [{ offset: 0, width: 9 }] // Fixed width for performance
       });
     }
     
@@ -57,9 +57,7 @@ export default {
         yawDelta: 0,
         pitchDelta: i < 3 ? -Math.PI / 60 : 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 10 }],
-        isBoost: (i >= 10 && i <= 15),
-        isBoostPowerup: (i === 20)
+        lanes: [{ offset: 0, width: 10 }]
       });
     }
     
@@ -97,9 +95,7 @@ export default {
         yawDelta: tunnelCurve * Math.PI / 100,
         pitchDelta: Math.sin(i * 0.15) * Math.PI / 250,
         rollDelta: tunnelCurve * Math.PI / 150, // Gentle banking
-        lanes: [{ offset: 0, width: 10 * energyPulse }],
-        isBoost: (i === 20),
-        isBoostPowerup: (i === 10 || i === 30)
+        lanes: [{ offset: 0, width: 10 }] // Fixed width for performance
       });
     }
     
@@ -140,7 +136,7 @@ export default {
           pitchDelta: 0,
           rollDelta: 0,
           lanes: [{ offset: 0, width: 9 }],
-          isBoost: (i >= 8 && i <= 12 && section === 1)
+          // No boost needed
         });
       }
       
@@ -197,7 +193,7 @@ export default {
           pitchDelta: i < 2 ? -Math.PI / 80 : 0,
           rollDelta: 0,
           lanes: [{ offset: 0, width: 10 }],
-          isBoostPowerup: (i === 3 && portal === 2)
+          // No boost needed
         });
       }
     }
@@ -210,8 +206,7 @@ export default {
         yawDelta: Math.sin(i * 0.1) * Math.PI / 180,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 12 * finalPulse }],
-        isBoost: (i >= 15 && i <= 22),
+        lanes: [{ offset: 0, width: 12 }], // Fixed width for performance
         isFinishLine: (i === 29)
       });
     }

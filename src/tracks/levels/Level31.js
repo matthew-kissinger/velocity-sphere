@@ -61,7 +61,7 @@ export default {
       for (let i = 0; i < 10; i++) {
         addSegment({ 
           lanes: [{ offset: 0, width: 12 }],
-          isBoost: (i === 5) // Single boost in straight
+          // No boost needed - peaceful track
         });
       }
     }
@@ -78,7 +78,7 @@ export default {
     for (let i = 0; i < 15; i++) {
       addSegment({ 
         lanes: [{ offset: 0, width: 10 }],
-        isBoost: (i === 7) // Mid-bridge boost
+        // No boost needed
       });
     }
     
@@ -108,7 +108,7 @@ export default {
       addSegment({ 
         yawDelta: circleAngle / circleSegments,
         lanes: [{ offset: 0, width: 14 }],
-        isBoost: (i % 15 === 7) // Regular boost placement
+        // No boost needed - meditation circle
       });
     }
     
@@ -158,7 +158,6 @@ export default {
       addSegment({
         yawDelta: Math.sin(i * 0.2) * Math.PI / 150, // Gentle weaving
         lanes: [{ offset: 0, width: 12 }],
-        isBoost: (i >= 10 && i <= 14), // Boost zone for finish
         isFinishLine: (i === 19)
       });
     }

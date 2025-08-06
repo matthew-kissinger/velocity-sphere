@@ -58,8 +58,7 @@ export default {
       // Sharp right
       for (let i = 0; i < 6; i++) {
         addSegment({
-          yawDelta: Math.PI / 24,
-          isBoost: (i === 0) // Lightning charge boost
+          yawDelta: Math.PI / 24
         });
       }
       // Sharp left
@@ -118,11 +117,22 @@ export default {
       
       // Jump ramp
       for (let i = 0; i < 8; i++) {
-        addSegment({
-          pitchDelta: Math.PI / 60,
-          yawDelta: 0,
-          isBoost: (i === 0) // Boost at takeoff
-        });
+        if (i === 2) {
+          // Single boost pad on left side of ramp (avoidable)
+          addSegment({
+            pitchDelta: Math.PI / 60,
+            yawDelta: 0,
+            lanes: [
+              { offset: -3, width: 4, isBoost: true }, // Boost on left
+              { offset: 3, width: 4 } // Clear on right
+            ]
+          });
+        } else {
+          addSegment({
+            pitchDelta: Math.PI / 60,
+            yawDelta: 0
+          });
+        }
       }
       
       // Gap
@@ -149,8 +159,7 @@ export default {
         yawDelta: windPush,
         pitchDelta: 0,
         rollDelta: windPush * 2, // Bank with the wind
-        lanes: [{ offset: 0, width: tunnelWidth }],
-        isBoost: (i % 10 === 5) // Periodic wind tunnel boosts
+        lanes: [{ offset: 0, width: tunnelWidth }]
       });
     }
     
@@ -182,8 +191,7 @@ export default {
       addSegment({
         yawDelta: direction * Math.PI / 25 * chaosIntensity, // Sharp horizontal turns
         pitchDelta: 0, // Keep it flat for speed
-        rollDelta: direction * Math.PI / 40, // Heavy banking
-        isBoost: (i % 10 === 0) // Periodic tornado boosts
+        rollDelta: direction * Math.PI / 40 // Heavy banking
       });
     }
     
@@ -193,7 +201,6 @@ export default {
         yawDelta: Math.sin(i * 0.1) * Math.PI / 100,
         pitchDelta: i < 15 ? -Math.PI / 100 : 0, // Slight downhill for speed
         rollDelta: 0,
-        isBoost: (i >= 10 && i <= 15), // Storm push boost
         isFinishLine: (i === 29)
       });
     }

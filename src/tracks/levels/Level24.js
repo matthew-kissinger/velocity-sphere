@@ -85,8 +85,7 @@ export default {
         yawDelta: gentleWeave,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 14 }], // Wide highway
-        isBoostPowerup: (i === 12)
+        lanes: [{ offset: 0, width: 14 }] // Wide highway
       });
     }
     
@@ -164,8 +163,7 @@ export default {
     for (let i = 0; i < 8; i++) {
       addSegment({
         pitchDelta: i < 3 ? -Math.PI / 60 : 0,
-        lanes: [{ offset: 0, width: 13 }],
-        isBoost: (i === 5)
+        lanes: [{ offset: 0, width: 13 }]
       });
     }
     
@@ -177,8 +175,7 @@ export default {
         yawDelta: cityFlow,
         pitchDelta: -Math.PI / 120,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 11 }],
-        isBoostPowerup: (i === 10)
+        lanes: [{ offset: 0, width: 11 }]
       });
     }
     
@@ -230,7 +227,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 14 }],
-        isBoost: (i >= 8 && i <= 15),
         isFinishLine: (i === 19)
       });
     }

@@ -6,7 +6,7 @@
 
 Velocity Sphere is a high-speed 3D racing game where players control a holographic sphere through increasingly challenging tracks. The game features:
 
-- **30 Unique Tracks** across 3 distinct circuits
+- **40 Unique Tracks** across 4 distinct circuits
 - **Progressive Difficulty** from tutorial to extreme challenges
 - **Real-time Physics** with Cannon.js physics engine
 - **Dynamic Visuals** with custom shaders and effects
@@ -16,19 +16,25 @@ Velocity Sphere is a high-speed 3D racing game where players control a holograph
 
 ### Circuit 1: Prismatic (Tracks 1-10)
 - **Theme**: Introduction to core mechanics
-- **Difficulty**: Easy to Hard
+- **Difficulty**: Easy to Extreme
 - **Highlights**: Tutorial level, split paths, loops, technical challenges
 
-### Circuit 2: Nova (Tracks 11-20)
-- **Theme**: Advanced techniques and extreme challenges
-- **Difficulty**: Medium to Extreme
-- **Highlights**: Multi-path choices, vertical climbs, complex geometries
+### Circuit 2: Elemental Odyssey (Tracks 11-20)
+- **Theme**: Nature-inspired tracks with elemental themes
+- **Difficulty**: Easy to Extreme
+- **Highlights**: Ocean waves, desert mirages, storm chases, elemental nexus
 
-### Circuit 3: Zenith (Tracks 21-30)
-- **Theme**: Ultimate mastery and performance optimized
+### Circuit 3: Quantum Odyssey (Tracks 21-30)
+- **Theme**: Tech-focused with complex geometries
 - **Difficulty**: Medium to Extreme
-- **Highlights**: Time distortions, zen gardens, ultimate challenges
+- **Highlights**: Time distortions, quantum tunnels, ultimate challenges
 - **Special**: Heavily optimized for 60+ FPS despite complex designs
+
+### Circuit 4: Tranquil Realms (Tracks 31-40)
+- **Theme**: Zen and aesthetic focused with wide comfortable tracks
+- **Difficulty**: Medium to Extreme
+- **Highlights**: Zen gardens, sakura spirals, aurora fields, harmony circuits
+- **Special**: Peaceful racing with multiple viable paths
 
 ## 🚀 Quick Start
 
@@ -67,7 +73,7 @@ src/
 │   └── Timer.js       # Lap timing system
 ├── tracks/            # Track generation system
 │   ├── TrackBuilder.js # Optimized track construction
-│   └── levels/        # 30 individual track definitions
+│   └── levels/        # 40 individual track definitions
 ├── rendering/         # Visual systems
 │   ├── Camera.js      # Dynamic chase camera
 │   ├── Lighting.js    # Professional lighting setup
@@ -137,6 +143,9 @@ Each level can specify custom shaders for unique visual effects:
 - ✅ **Circuit 3 Performance**: Reduced segment counts by 50-60%
 - ✅ **Track Flipping**: Fixed banking limits and proper reset sequences
 - ✅ **Frame Drops**: Optimized levels 26, 28, 30 for 60+ FPS
+- ✅ **Orbital Camera**: Fixed PC angle limits to allow full 360° rotation
+- ✅ **Camera Tracking**: Fixed camera maintaining orbital position when moving
+- ✅ **Mobile Controls**: Fixed joystick overlap with screen bottom
 
 ### Current Limitations
 - Browser must support WebGL 2.0
@@ -240,6 +249,6 @@ MIT License - See LICENSE file for details
 
 ---
 
-**Current Version**: 1.2.0 (January 2025)
+**Current Version**: 1.3.0 (January 2025)
 **Status**: Production Ready
 **Performance**: Optimized for 60+ FPS# Velocity Sphere - Deployment trigger

@@ -17,7 +17,7 @@ export default {
   uniforms: {
     primaryColor: { value: new THREE.Color(0x00ff00) },
     backgroundColor: { value: new THREE.Color(0x000000) },
-    rainSpeed: { value: 2.5 }, // Reduced from 5.0 to slow down animation
+    rainSpeed: { value: 1.0 }, // Reduced from 2.5 for zen flow
     charDensity: { value: 15.0 },
     brightness: { value: 1.2 }
   },

@@ -7,7 +7,7 @@
 export default {
   name: "Zen Garden",
   description: "Flow through tranquil gardens with natural curves",
-  difficulty: 3,
+  difficulty: 1,
   shader: "zen-sand",
   skybox: "sunset-garden",
   
@@ -44,8 +44,7 @@ export default {
         yawDelta: 0,
         pitchDelta: hillProfile * Math.PI / 90,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 10 }],
-        isBoost: (i === 4)
+        lanes: [{ offset: 0, width: 10 }]
       });
     }
     
@@ -57,8 +56,7 @@ export default {
         yawDelta: windingPath * Math.PI / 60,
         pitchDelta: 0,
         rollDelta: 0, // Removed roll
-        lanes: [{ offset: 0, width: 9 }],
-        isBoostPowerup: (i === 6)
+        lanes: [{ offset: 0, width: 9 }]
       });
     }
     
@@ -83,8 +81,7 @@ export default {
       addSegment({
         pitchDelta: i < 2 ? -Math.PI / 80 : 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 11 }],
-        isBoost: (i === 3)
+        lanes: [{ offset: 0, width: 11 }]
       });
     }
     
@@ -108,8 +105,7 @@ export default {
         yawDelta: -Math.PI / 180,
         pitchDelta: -descentCurve * Math.PI / 75,
         rollDelta: 0, // Removed roll
-        lanes: [{ offset: 0, width: 11 }],
-        isBoostPowerup: (i === 5)
+        lanes: [{ offset: 0, width: 11 }]
       });
     }
     
@@ -127,8 +123,7 @@ export default {
         yawDelta: (Math.PI * 1.5) / meditationSegments,
         pitchDelta: 0,
         rollDelta: banking,
-        lanes: [{ offset: 0, width: 12 }],
-        isBoost: (i === 10)
+        lanes: [{ offset: 0, width: 12 }]
       });
     }
     
@@ -138,8 +133,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 14 }],
-        isBoost: (i >= 6 && i <= 9)
+        lanes: [{ offset: 0, width: 14 }]
       });
     }
     
@@ -187,8 +181,7 @@ export default {
         yawDelta: 0,
         pitchDelta: Math.PI / 250,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 11 }],
-        isBoostPowerup: (i === 4)
+        lanes: [{ offset: 0, width: 11 }]
       });
     }
     
@@ -201,7 +194,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 12 }],
-        isBoost: (i >= 4 && i <= 7),
         isFinishLine: (i === 11)
       });
     }

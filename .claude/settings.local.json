@@ -27,7 +27,10 @@
       "Bash(curl:*)",
       "Bash(ls:*)",
       "Bash(git config:*)",
-      "Bash(./deploy.bat)"
+      "Bash(./deploy.bat)",
+      "Bash(find:*)",
+      "Bash(for file in src/tracks/levels/Level*.js)",
+      "Bash(do sed -i 's/.*railShader:.*//g' \"$file\")"
     ],
     "deny": []
   }

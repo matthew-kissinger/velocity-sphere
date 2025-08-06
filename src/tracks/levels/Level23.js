@@ -40,8 +40,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 6 }],
-        isBoostPowerup: (i === 7)
+        lanes: [{ offset: 0, width: 6 }]
       });
     }
     
@@ -94,8 +93,7 @@ export default {
         yawDelta: Math.sin(i * 0.2) * Math.PI / 80,
         pitchDelta: -Math.PI / 100, // Controlled descent
         rollDelta: Math.sin(i * 0.2) * Math.PI / 120,
-        lanes: [{ offset: 0, width: 10 }], // Fixed width for performance
-        isBoost: (i === 15)
+        lanes: [{ offset: 0, width: 10 }] // Fixed width for performance
       });
     }
     
@@ -121,8 +119,7 @@ export default {
         addSegment({
           pitchDelta: i < 4 ? -Math.PI / 60 : 0,
           rollDelta: 0,
-          lanes: [{ offset: 0, width: 10 }],
-          isBoostPowerup: (i === 6 && jump === 2)
+          lanes: [{ offset: 0, width: 10 }]
         });
       }
     }
@@ -137,10 +134,9 @@ export default {
         pitchDelta: lightChase * Math.PI / 200,
         rollDelta: Math.PI / 150, // Mild constant bank
         lanes: [{ 
-          offset: lightChase * 2, 
+          offset: 0, // Fixed offset for performance 
           width: 9 
-        }],
-        isBoost: (i === 25)
+        }]
       });
     }
     
@@ -151,7 +147,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 12 }],
-        isBoost: (i >= 10 && i <= 15),
         isFinishLine: (i === 19)
       });
     }

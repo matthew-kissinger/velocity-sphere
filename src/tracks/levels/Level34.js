@@ -64,7 +64,7 @@ export default {
               yawDelta: sCurve,
               pitchDelta: Math.sin(progress * Math.PI * 2) * Math.PI / 150,
               lanes: [{ offset: 0, width: 11 }],
-              isBoost: (i === Math.floor(section.segments / 2))
+              // No boost needed - natural flow
             });
           }
           break;
@@ -85,7 +85,7 @@ export default {
             addSegment({
               yawDelta: Math.sin(i * 0.1) * Math.PI / 500, // Very slight variation
               lanes: [{ offset: 0, width: 12 }],
-              isBoost: (i >= 5 && i <= 9)
+              // No boost needed
             });
           }
           break;
@@ -101,7 +101,7 @@ export default {
         yawDelta: tunnelCurve,
         pitchDelta: Math.sin(tunnelProgress * Math.PI) * Math.PI / 100, // Gentle hill
         lanes: [{ offset: 0, width: 8 }], // Narrower in tunnel
-        isBoostPowerup: (i === 20)
+        // No powerup needed
       });
     }
     
@@ -156,7 +156,7 @@ export default {
         pitchDelta: 0,
         rollDelta: groveFlow * 0.3, // Gentle banking with turns
         lanes: [{ offset: 0, width: 14 }],
-        isBoost: (i % 12 === 6)
+        // No boost needed - peaceful grove
       });
     }
     
@@ -168,7 +168,6 @@ export default {
         yawDelta: 0,
         pitchDelta: -Math.sin(finalProgress * Math.PI) * Math.PI / 200, // Gentle dip
         lanes: [{ offset: 0, width: 11 + finalProgress * 4 }], // Widening to finish
-        isBoost: (i >= 15 && i <= 20),
         isFinishLine: (i === 24)
       });
     }

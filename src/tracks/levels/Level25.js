@@ -40,8 +40,7 @@ export default {
         addSegment({
           yawDelta: 0,
           pitchDelta: 0,
-          lanes: [{ offset: 0, width: 12 }],
-          isBoostPowerup: (i === 5 && section === 1)
+          lanes: [{ offset: 0, width: 12 }]
         });
       }
       
@@ -60,40 +59,36 @@ export default {
       }
     }
     
-    // Begin volcanic ascent - spiraling up
-    for (let spiral = 0; spiral < 2; spiral++) {
-      // Recovery section before spiral
-      for (let i = 0; i < 10; i++) {
-        addSegment({
-          yawDelta: 0,
-          pitchDelta: 0,
-          rollDelta: 0,
-          lanes: [{ offset: 0, width: 10 }]
-        });
-      }
-      
-      // Spiral up the volcano wall
-      for (let i = 0; i < 35; i++) {
-        addSegment({
-          yawDelta: (Math.PI * 1.5) / 35, // 270° turn
-          pitchDelta: Math.PI / 120, // Gradual climb
-          rollDelta: Math.PI / 80, // Moderate bank
-          lanes: [{ offset: 0, width: 8 }],
-          isBoost: (i === 20 && spiral === 0)
-        });
-      }
-      
-      // Platform between spirals
-      if (spiral < 1) {
-        for (let i = 0; i < 12; i++) {
-          addSegment({
-            yawDelta: 0,
-            pitchDelta: 0,
-            rollDelta: -Math.PI / 120, // Unbank
-            lanes: [{ offset: 0, width: 11 }]
-          });
-        }
-      }
+    // Begin volcanic ascent - single cleaner spiral
+    // Recovery section before ascent
+    for (let i = 0; i < 15; i++) {
+      addSegment({
+        yawDelta: 0,
+        pitchDelta: 0,
+        rollDelta: 0,
+        lanes: [{ offset: 0, width: 11 }]
+      });
+    }
+    
+    // Single spiral up the volcano wall - less confusing
+    for (let i = 0; i < 50; i++) {
+      addSegment({
+        yawDelta: (Math.PI * 2) / 50, // 360° turn total
+        pitchDelta: Math.PI / 100, // Steady climb
+        rollDelta: Math.PI / 120, // Gentle bank
+        lanes: [{ offset: 0, width: 9 }],
+        isBoost: (i === 25) // Single boost halfway up
+      });
+    }
+    
+    // Level out after spiral
+    for (let i = 0; i < 10; i++) {
+      addSegment({
+        yawDelta: 0,
+        pitchDelta: 0,
+        rollDelta: -Math.PI / 120, // Unbank
+        lanes: [{ offset: 0, width: 11 }]
+      });
     }
     
     // Lava vent jumps - controlled gaps
@@ -107,8 +102,13 @@ export default {
         });
       }
       
-      // Thermal updraft launch
-      addSegment({ isBouncePad: true });
+      // Thermal updraft - steep ramp
+      for (let i = 0; i < 3; i++) {
+        addSegment({ 
+          pitchDelta: Math.PI / 30,
+          lanes: [{ offset: 0, width: 8 }]
+        });
+      }
       
       // Airborne
       for (let i = 0; i < 3 + vent; i++) {
@@ -133,10 +133,9 @@ export default {
         pitchDelta: Math.cos(i * 0.1) * Math.PI / 150,
         rollDelta: 0, // No rolling on narrow edge
         lanes: [{ 
-          offset: edgeWobble, 
+          offset: 0, // Fixed offset for performance
           width: 7 // Narrow edge
-        }],
-        isBoostPowerup: (i === 20)
+        }]
       });
     }
     
@@ -161,8 +160,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 11 }],
-        isBoost: (i >= 8 && i <= 12)
+        lanes: [{ offset: 0, width: 11 }]
       });
     }
     
@@ -175,10 +173,9 @@ export default {
         pitchDelta: -Math.PI / 150, // Gentle descent
         rollDelta: flowCurve * Math.PI / 100,
         lanes: [{ 
-          offset: flowCurve * 2, 
+          offset: 0, // Fixed offset for performance
           width: 9 
-        }],
-        isBoost: (i === 25)
+        }]
       });
     }
     
@@ -189,7 +186,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 12 }],
-        isBoost: (i >= 18 && i <= 24),
         isFinishLine: (i === 29)
       });
     }

@@ -72,6 +72,10 @@ export default {
       return value;
     }
     
+    float random(vec2 st) {
+      return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
+    }
+    
     vec3 aurora(vec2 p, float t) {
       // Create flowing aurora bands
       float wave1 = sin(p.x * waveScale + t * flowSpeed) * 0.5;
@@ -122,10 +126,6 @@ export default {
       color += vec3(stars) * (1.0 - aurora(vWorldPosition.xz, time).r);
       
       gl_FragColor = vec4(color, 1.0);
-    }
-    
-    float random(vec2 st) {
-      return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453123);
     }
   `
 };

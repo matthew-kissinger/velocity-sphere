@@ -1,14 +1,27 @@
-level 31 - great
-level 32 - good start but after I get to the lowest point i cant make that steep climb up
-level 33 - great level but it is medium difficulty
-level 34 - great level
-level 35 - great level
-level 36 great leve but on levels with that shader we might need a shader for the rails on those levels if the background is dark
-level 37 - very hard and you need rails on the clear track shader because you cant see the track also cant finish the end that end twist is not great
-level 38 - that speed pad with multiple in a row makes this level impossible and the powerup after it just launches you and not way to bank or slow
-level 39 - stop using that ugly track shader 
-level 40 - 
 
-also the orbital camera has an issue on pc but not mobile. I am able to look at the ball from any angle on mobile but on pc i can only look down to a 90 degree angle from the ground and no lower. so i am not able to look at the under part of the track or effectively I cant look up.
 
-Make these changes and redo the tracks i said to 
+26. possible but very steep.
+27. ABSOLUTELY IMPOSSIBLE - tons of corkscrews and bad turns and such
+28. set to EASY - 
+29. Good
+30. tough but easy to jump down to the bottom and land.
+31. good
+32. very cool but straight up ascent at end that we need to had speed pads lining from the bottom of that straight up ascent to climb = change to hard difficulty
+33. good
+34. good
+35. weird double cork that makes no sense - need change
+36. i see an error for shader - fix
+37. impossible track - redo complete level - i should not be banked and upside down for that long trying to get to end
+38. the end is impossible - curls up weird and banks. redo end
+39. impossible climbing corkscrews - redo level COMPLETELY
+40. interesting and fun but something is not instanced i am dropping frames
+41. fun - need to set diffficulty for all 41-50 as i dont see it in start menu mostly easy medium and hard - no extreme for this circuit
+42. another case of frames dropping
+43. great level
+44. good - different background shader
+45. good - different background shader
+46. IMPOSSIBLE DO NOT DO THIS IN A LEVEL - START FROM SCRATCH FOR THIS LEVEL
+47. easy
+48. good idea but the track shader and the background are too similar and that track shader is ugly - fix it to be more vibey and aesthetic and do a different shader for background
+49. fails to load - fix it and analyze level and redo if its bad.
+50. need some speed pads on the last leg

@@ -91,8 +91,7 @@ export default {
         yawDelta: flowCurve * Math.PI / 80,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 12 }],
-        isBoostPowerup: (i === 12)
+        lanes: [{ offset: 0, width: 12 }]
       });
     }
     

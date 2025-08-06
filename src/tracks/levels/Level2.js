@@ -6,7 +6,7 @@
 export default {
   name: "Neon Grid",
   description: "Navigate through digital pathways with precise timing",
-  difficulty: 2,
+  difficulty: 3,
   shader: "tech-grid", // Tech grid shader for variety
   skybox: "neon-city", // Futuristic skybox to match tech theme
   

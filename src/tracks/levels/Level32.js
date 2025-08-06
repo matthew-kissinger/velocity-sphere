@@ -7,7 +7,7 @@
 export default {
   name: "Sakura Spiral",
   description: "Ascend through blooming cherry blossoms",
-  difficulty: 3,
+  difficulty: 5,
   shader: "sakura-bloom",
   skybox: "sunset-vibes",
   
@@ -50,7 +50,8 @@ export default {
           pitchDelta: pitchDelta,
           rollDelta: rollDelta,
           lanes: [{ offset: 0, width: width }],
-          isBoost: (i % 20 === 10) // Regular boost placement
+          // Add speed pads periodically for the climb
+          isBoost: (i % 10 >= 7)
         });
       }
       
@@ -61,7 +62,7 @@ export default {
           pitchDelta: 0,
           rollDelta: 0,
           lanes: [{ offset: 0, width: 20 }], // Extra wide platform
-          isBoostPowerup: (level === 1 && i === 5) // Powerup on middle platform
+          // No powerup needed
         });
       }
     }
@@ -73,7 +74,7 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 25 }], // Massive summit area
-        isBoost: (i >= 5 && i <= 9) // Boost zone at summit
+        // No boost needed at summit
       });
     }
     
@@ -121,7 +122,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 10 + tunnelProgress * 5 }], // Widening to finish
-        isBoost: (i >= 20 && i <= 25), // Final boost
         isFinishLine: (i === 29)
       });
     }

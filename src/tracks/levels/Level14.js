@@ -32,12 +32,11 @@ export default {
       });
     }
     
-    // Straight conveyor section with speed boost
+    // Straight conveyor section
     for (let i = 0; i < 15; i++) {
       addSegment({
         yawDelta: 0,
-        pitchDelta: 0,
-        isBoost: (i === 0 || i === 7 || i === 14) // Occasional conveyor belt speed zones
+        pitchDelta: 0
       });
     }
     
@@ -77,8 +76,7 @@ export default {
           { offset: -8, width: 7 },
           { offset: 8, width: 7 }
         ],
-        pitchDelta: i % 10 < 5 ? Math.PI / 80 : -Math.PI / 80,
-        isBoost: i % 10 === 0 // Periodic boost
+        pitchDelta: i % 10 < 5 ? Math.PI / 80 : -Math.PI / 80
       });
     }
     
@@ -120,7 +118,6 @@ export default {
       addSegment({
         yawDelta: 0,
         pitchDelta: -Math.PI / 100, // Slight downhill
-        isBoost: (i >= 5 && i <= 8),
         isFinishLine: (i === 19)
       });
     }

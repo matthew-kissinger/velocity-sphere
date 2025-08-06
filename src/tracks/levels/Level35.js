@@ -48,7 +48,7 @@ export default {
         pitchDelta: Math.sin(angle) * Math.PI / 200, // Gentle wave
         rollDelta: Math.sin(angle) * Math.PI / 60, // Soft banking
         lanes: [{ offset: 0, width: 14 }],
-        isBoost: (i === figure8Half / 2)
+        // No boost needed
       });
     }
     
@@ -71,7 +71,7 @@ export default {
         pitchDelta: Math.sin(angle) * Math.PI / 200,
         rollDelta: -Math.sin(angle) * Math.PI / 60,
         lanes: [{ offset: 0, width: 14 }],
-        isBoostPowerup: (i === figure8Half / 2)
+        // No powerup needed
       });
     }
     
@@ -122,7 +122,7 @@ export default {
         pitchDelta: Math.PI / 120, // Steady climb
         yawDelta: Math.sin(climbProgress * Math.PI) * Math.PI / 150, // Slight weave
         lanes: [{ offset: 0, width: 15 }],
-        isBoost: (i >= 10 && i <= 14)
+        // No boost needed for climb
       });
     }
     
@@ -130,20 +130,22 @@ export default {
     for (let i = 0; i < 20; i++) {
       addSegment({
         lanes: [{ offset: 0, width: 25 }], // Massive platform
-        isBoost: (i === 10)
+        // No boost needed on platform
       });
     }
     
-    // Heavenly descent - spiraling down around temple
-    const spiralSegments = 60;
-    for (let i = 0; i < spiralSegments; i++) {
-      const spiralProgress = i / spiralSegments;
+    // Heavenly descent - gentle winding path down
+    for (let i = 0; i < 60; i++) {
+      const descentProgress = i / 60;
+      
+      // Gentle S-curves instead of spiral
+      const curveDelta = Math.sin(descentProgress * Math.PI * 3) * Math.PI / 80;
       
       addSegment({
-        yawDelta: Math.PI * 3 / spiralSegments, // 1.5 rotations
-        pitchDelta: -Math.PI / 100, // Gradual descent
-        rollDelta: Math.PI / 40 * Math.sin(spiralProgress * Math.PI), // Banking variation
-        lanes: [{ offset: 0, width: 12 + Math.sin(spiralProgress * Math.PI * 2) * 2 }]
+        yawDelta: curveDelta,
+        pitchDelta: -Math.PI / 150, // Gentler descent
+        rollDelta: curveDelta * 0.3, // Mild banking that follows the curves
+        lanes: [{ offset: 0, width: 12 + Math.sin(descentProgress * Math.PI * 2) * 2 }]
       });
     }
     
@@ -156,7 +158,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 14 + finalProgress * 6 }], // Expanding to finish
-        isBoost: (i >= 20 && i <= 25),
         isFinishLine: (i === 29)
       });
     }

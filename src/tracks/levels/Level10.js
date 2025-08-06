@@ -137,7 +137,8 @@ export default {
     for (let i = 0; i < 15; i++) {
       addSegment({ 
         pitchDelta: Math.PI / 30,
-        yawDelta: -Math.PI / 200  // Slight left curve on ramp
+        yawDelta: -Math.PI / 200,  // Slight left curve on ramp
+        isBoost: (i >= 10 && i <= 14)  // Speed pads at top of ramp
       });
     }
     for (let i = 0; i < 8; i++) {
@@ -146,7 +147,8 @@ export default {
     for (let i = 0; i < 15; i++) {
       addSegment({ 
         pitchDelta: -Math.PI / 30,
-        yawDelta: -Math.PI / 200  // Continue curve on landing
+        yawDelta: -Math.PI / 200,  // Continue curve on landing
+        isBoost: (i >= 12 && i <= 14)  // Speed pads near end of landing
       });
     }
     

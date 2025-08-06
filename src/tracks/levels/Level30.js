@@ -37,8 +37,7 @@ export default {
         yawDelta: yawRate,
         pitchDelta: Math.PI / 125,
         rollDelta: banking,
-        lanes: [{ offset: 0, width: 12 }],
-        isBoostPowerup: (i === 12)
+        lanes: [{ offset: 0, width: 12 }]
       });
     }
     
@@ -48,8 +47,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 14 }],
-        isBoost: (i >= 5 && i <= 10)
+        lanes: [{ offset: 0, width: 14 }]
       });
     }
     
@@ -104,7 +102,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        isBoostPowerup: (dir === 1)
+        // No boost needed
       });
     }
     
@@ -134,9 +132,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 13 }],
-        isBoost: (i >= 5 && i <= 10),
-        isBoostPowerup: (i === 15)
+        lanes: [{ offset: 0, width: 13 }]
       });
     }
     
@@ -201,7 +197,7 @@ export default {
         yawDelta: 0,
         pitchDelta: 0,
         rollDelta: 0,
-        isBoostPowerup: (i === 1)
+        // No boost needed
       });
     }
     
@@ -213,8 +209,7 @@ export default {
         yawDelta: flowPattern * Math.PI / 60,
         pitchDelta: 0,
         rollDelta: 0,
-        lanes: [{ offset: 0, width: 12 }],
-        isBoost: (i === 12)
+        lanes: [{ offset: 0, width: 12 }]
       });
     }
     
@@ -246,7 +241,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 16 }],
-        isBoost: (i >= 1 && i <= 4),
         isFinishLine: (i === 5)
       });
     }

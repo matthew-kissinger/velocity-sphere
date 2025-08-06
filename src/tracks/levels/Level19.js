@@ -71,10 +71,22 @@ export default {
       
       // Jump preparation - much gentler ramp
       for (let i = 0; i < 8; i++) {
-        addSegment({
-          pitchDelta: Math.PI / 90, // Much gentler climb (2 degrees per segment)
-          isBoost: (i === 0 || i === 4) // More boost help
-        });
+        if (i === 2 || i === 5) {
+          // Multiple avoidable boosts on approach
+          addSegment({
+            pitchDelta: Math.PI / 90,
+            lanes: [
+              { offset: 0, width: 3, isBoost: true }, // Center boost
+              { offset: -4, width: 2 }, // Left clear
+              { offset: 4, width: 2 } // Right clear
+            ]
+          });
+        } else {
+          addSegment({
+            pitchDelta: Math.PI / 90, // Much gentler climb (2 degrees per segment)
+            isBoost: (i >= 6 && i <= 7) // Extra boosts at top of ramp
+          });
+        }
       }
       
       // Crevasse gap
@@ -105,18 +117,13 @@ export default {
     }
     
     // Glacier slide - thrilling descent section
-    // Add boost powerup before the big descent
-    addSegment({
-      isBoostPowerup: true
-    });
     
     // Start at glacier peak
     for (let i = 0; i < 10; i++) {
       addSegment({
         pitchDelta: 0,
         yawDelta: 0,
-        rollDelta: 0,
-        isBoost: (i === 8) // Boost before drop
+        rollDelta: 0
       });
     }
     
@@ -139,7 +146,7 @@ export default {
         pitchDelta: pitchAngle, // Much gentler descent
         yawDelta: curveIntensity * Math.PI / 50, // Weaving path
         rollDelta: curveIntensity * Math.PI / 60, // Banking
-        isBoost: (i % 15 === 0), // Speed boosts
+        // Removed boosts - descent provides speed
         lanes: [{ 
           offset: 0, 
           width: 7 + Math.sin(i * 0.1) * 2 // Variable width ice channels
@@ -182,8 +189,7 @@ export default {
         yawDelta: Math.sin(i * 0.15) * Math.PI / 80, // Weaving ice slide
         pitchDelta: -Math.PI / 90, // Much gentler descent to avoid camera lock
         rollDelta: Math.sin(i * 0.2) * Math.PI / 100,
-        lanes: [{ offset: 0, width: 6 + slideIntensity * 3 }], // Widens as you go faster
-        isBoost: (i >= 5 && i <= 15) // Extended boost zone
+        lanes: [{ offset: 0, width: 6 + slideIntensity * 3 }] // Widens as you go faster
       });
     }
     
@@ -204,7 +210,6 @@ export default {
         pitchDelta: 0,
         rollDelta: 0,
         lanes: [{ offset: 0, width: 12 }],
-        isBoost: (i >= 5 && i <= 10), // Final boost
         isFinishLine: (i === 14)
       });
     }
