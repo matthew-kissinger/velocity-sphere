@@ -1,31 +1,16 @@
-# Deployment Guide
+# Deploy
 
-## Quick Deploy to GitHub Pages
+## GitHub Pages (recommended)
+1. Build production bundle:
+   - `npm run build`
+2. Commit and push to `main` (ensure Pages is configured for your branch)
+3. Ensure Vite base path matches repository if using subpath:
+   - In `vite.config.js`, set `base: '/velocity-sphere/'` (or your repo name)
+4. Wait for Pages to publish, then verify the URL in repo settings.
 
-Just run these two commands:
+## Local production preview
+- `npm run build && npm run preview`
 
-```bash
-# 1. Build and prepare for deployment
-./deploy.bat
-
-# 2. Commit and push
-git add -A && git commit -m "Deploy to GitHub Pages" && git push
-```
-
-That's it! Your game will be live at: https://matthew-kissinger.github.io/velocity-sphere/
-
-## What happens behind the scenes
-
-1. `npm run build` - Creates production build in `dist/` folder
-2. The build automatically uses `/velocity-sphere/` as base path for GitHub Pages
-3. `deploy.bat` copies the built HTML to root with correct paths
-4. Git push triggers GitHub Pages to update
-
-## Local Development
-
-For local development, just use:
-```bash
-npm run dev
-```
-
-No need to worry about paths or multiple HTML files!
+## Common pitfalls
+- Wrong `base` in Vite → broken asset paths on Pages
+- Missing `index.html` at repo root or `dist` misconfigured
